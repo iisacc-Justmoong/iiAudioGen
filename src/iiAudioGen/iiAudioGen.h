@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <expected>
+#include <filesystem>
 #include <memory>
 #include <optional>
 #include <string>
@@ -30,6 +31,8 @@ enum class ErrorCode {
     InvalidRequest,
     BackendUnavailable,
     GenerationFailed,
+    InvalidModel,
+    ModelLoadFailed,
 };
 
 struct Error {
@@ -38,16 +41,19 @@ struct Error {
 };
 
 using GenerationOutcome = std::expected<GenerationResult, Error>;
+using ModelLoadOutcome = std::expected<void, Error>;
 
 class IIAUDIOGEN_EXPORT Backend {
 public:
     virtual ~Backend() = default;
+    [[nodiscard]] virtual ModelLoadOutcome loadModel(const std::filesystem::path& modelPath);
     [[nodiscard]] virtual GenerationOutcome generate(const GenerationRequest& request) = 0;
 };
 
 class IIAUDIOGEN_EXPORT Generator {
 public:
     explicit Generator(std::shared_ptr<Backend> backend = {});
+    [[nodiscard]] ModelLoadOutcome loadModel(const std::filesystem::path& modelPath);
     [[nodiscard]] GenerationOutcome generate(const GenerationRequest& request) const;
 
 private:

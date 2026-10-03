@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(iiAudioGen VERSION 0.1.0 LANGUAGES CXX)
+project(iiAudioGen VERSION 0.2.0 LANGUAGES CXX)
 
 if(PROJECT_IS_TOP_LEVEL AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     if(DEFINED ENV{HOME} AND NOT "$ENV{HOME}" STREQUAL "")
@@ -35,7 +35,7 @@ set_target_properties(iiAudioGen PROPERTIES
     CXX_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN YES
     VERSION ${PROJECT_VERSION}
-    SOVERSION ${PROJECT_VERSION_MAJOR})
+    SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 
 set(_package_dir "${CMAKE_INSTALL_LIBDIR}/cmake/iiAudioGen")
 install(TARGETS iiAudioGen EXPORT iiAudioGenTargets
@@ -61,7 +61,7 @@ if(BUILD_TESTING)
     add_executable(iiAudioGenTests tests/generation.cpp)
     target_link_libraries(iiAudioGenTests PRIVATE iiAudioGen::iiAudioGen)
     set_target_properties(iiAudioGenTests PROPERTIES CXX_EXTENSIONS OFF)
-    foreach(_case request unavailable delegation error)
+    foreach(_case request unavailable delegation error model)
         add_test(NAME iiAudioGen.${_case} COMMAND iiAudioGenTests ${_case})
         set_tests_properties(iiAudioGen.${_case} PROPERTIES TIMEOUT 10)
     endforeach()

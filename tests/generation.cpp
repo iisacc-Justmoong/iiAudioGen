@@ -19,13 +19,24 @@ void check(bool condition, std::string_view message) {
 class RecordingBackend final : public iiAudioGen::Backend {
 public:
     int calls{0};
+    int modelCalls{0};
+    std::filesystem::path receivedModel;
+    std::filesystem::path modelDuringGeneration;
+    iiAudioGen::ModelLoadOutcome modelOutcome;
     iiAudioGen::GenerationRequest received;
     iiAudioGen::GenerationOutcome outcome{iiAudioGen::GenerationResult{
         {0.25F, -0.25F, 0.5F, -0.5F}, 48000, 2}};
 
+    iiAudioGen::ModelLoadOutcome loadModel(const std::filesystem::path& modelPath) override {
+        ++modelCalls;
+        receivedModel = modelPath;
+        return modelOutcome;
+    }
+
     iiAudioGen::GenerationOutcome generate(const iiAudioGen::GenerationRequest& request) override {
         ++calls;
         received = request;
+        modelDuringGeneration = receivedModel;
         return outcome;
     }
 };
@@ -109,6 +120,60 @@ void errorTest() {
           "Backend failures must reach the caller unchanged");
 }
 
+void modelTest() {
+    auto backend = std::make_shared<RecordingBackend>();
+    iiAudioGen::Generator generator{backend};
+    const auto empty = generator.loadModel({});
+    check(!empty && empty.error().code == iiAudioGen::ErrorCode::InvalidModel &&
+              backend->modelCalls == 0,
+          "An empty model path must fail before backend execution");
+
+    auto embeddedNull = std::filesystem::path{"models/audio"}.native();
+    embeddedNull.push_back(std::filesystem::path::value_type{});
+    embeddedNull += std::filesystem::path{"hidden-suffix"}.native();
+    const auto invalid = generator.loadModel(std::filesystem::path{embeddedNull});
+    check(!invalid && invalid.error().code == iiAudioGen::ErrorCode::InvalidModel &&
+              backend->modelCalls == 0,
+          "Embedded null characters must not reach a model loader");
+
+    const auto noBackend = iiAudioGen::Generator{}.loadModel("models/audio");
+    check(!noBackend && noBackend.error().code == iiAudioGen::ErrorCode::BackendUnavailable,
+          "An unconfigured model slot must report BackendUnavailable");
+    const auto emptyWithoutBackend = iiAudioGen::Generator{}.loadModel({});
+    check(!emptyWithoutBackend && emptyWithoutBackend.error().code == iiAudioGen::ErrorCode::InvalidModel,
+          "Model path validation must precede missing-backend detection");
+
+    const std::filesystem::path directory{"models/audio model"};
+    const std::filesystem::path checkpoint{"models/audio model/weights.safetensors"};
+    const auto directoryResult = generator.loadModel(directory);
+    check(directoryResult.has_value() && backend->modelCalls == 1 && backend->receivedModel == directory,
+          "A model directory path must be forwarded once without rewriting");
+    const auto checkpointResult = generator.loadModel(checkpoint);
+    check(checkpointResult.has_value() && backend->modelCalls == 2 && backend->receivedModel == checkpoint,
+          "A model file path must be forwarded once without format assumptions");
+    const auto generated = generator.generate({"Rain on a window"});
+    check(generated.has_value() && backend->calls == 1 && backend->modelDuringGeneration == checkpoint,
+          "Loading and generation must use the same retained backend");
+
+    backend->modelOutcome = std::unexpected(iiAudioGen::Error{
+        iiAudioGen::ErrorCode::ModelLoadFailed, "Test model load failure"});
+    const auto failed = generator.loadModel(checkpoint);
+    check(!failed && failed.error().code == iiAudioGen::ErrorCode::ModelLoadFailed &&
+              failed.error().message == "Test model load failure" && backend->modelCalls == 3,
+          "Model loader failures must reach the caller unchanged");
+
+    class GenerationOnlyBackend final : public iiAudioGen::Backend {
+    public:
+        iiAudioGen::GenerationOutcome generate(const iiAudioGen::GenerationRequest&) override {
+            return iiAudioGen::GenerationResult{};
+        }
+    };
+    const auto unsupported = iiAudioGen::Generator{std::make_shared<GenerationOnlyBackend>()}
+                                 .loadModel(directory);
+    check(!unsupported && unsupported.error().code == iiAudioGen::ErrorCode::BackendUnavailable,
+          "A backend without a model loader must never claim successful loading");
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
@@ -124,6 +189,8 @@ int main(int argc, char** argv) {
         delegationTest();
     } else if (name == "error") {
         errorTest();
+    } else if (name == "model") {
+        modelTest();
     } else {
         return 2;
     }
