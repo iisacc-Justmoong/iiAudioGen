@@ -1,0 +1,50 @@
+#!@Python3_EXECUTABLE@
+"""Protocol fixture only; this does not perform model inference."""
+import math
+import os
+from pathlib import Path
+import struct
+import sys
+import time
+
+def read(count):
+    value = sys.stdin.buffer.read(count)
+    if len(value) != count:
+        raise EOFError
+    return value
+
+def send(value):
+    header = struct.pack("<Q", len(value))
+    # Split framing across writes to exercise exact-read handling.
+    for part in (header[:3], header[3:], value):
+        sys.stdout.buffer.write(part)
+        sys.stdout.buffer.flush()
+
+mode = "ok"
+while True:
+    try:
+        count = struct.unpack("<Q", read(8))[0]
+        data = read(count)
+    except EOFError:
+        break
+    if data[0] == 1:
+        candidate = Path(data[1:].decode()).name
+        if candidate == "timeout":
+            time.sleep(60)
+        if candidate == "crash":
+            os._exit(7)
+        if candidate == "error":
+            send(b"\x01" + struct.pack("<I", 4) + b"Fixture model load failure")
+            continue
+        mode = candidate
+        send(b"\x00")
+    elif data[0] == 2:
+        if mode == "badlength":
+            sys.stdout.buffer.write(struct.pack("<Q", 129 * 1024 * 1024))
+            sys.stdout.buffer.flush()
+            continue
+        duration, rate, channels, seeded, seed = struct.unpack("<dIHBQ", data[1:24])
+        frames = max(1, math.floor(duration * rate + 0.5))
+        value = float("nan") if mode == "badpcm" else 0.25
+        send(b"\x00" + struct.pack("<IHQ", rate, channels, frames) +
+             struct.pack("<f", value) * frames * channels)

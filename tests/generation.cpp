@@ -80,7 +80,7 @@ void requestTest() {
 }
 
 void unavailableTest() {
-    const auto result = iiAudioGen::Generator{}.generate({"Wind through trees"});
+    const auto result = iiAudioGen::Generator{nullptr}.generate({"Wind through trees"});
     check(!result && result.error().code == iiAudioGen::ErrorCode::BackendUnavailable,
           "An unconfigured generator must report BackendUnavailable");
     check(!result && !result.error().message.empty(), "Missing-backend errors must explain the failure");
@@ -136,7 +136,7 @@ void modelTest() {
               backend->modelCalls == 0,
           "Embedded null characters must not reach a model loader");
 
-    const auto noBackend = iiAudioGen::Generator{}.loadModel("models/audio");
+    const auto noBackend = iiAudioGen::Generator{nullptr}.loadModel("models/audio");
     check(!noBackend && noBackend.error().code == iiAudioGen::ErrorCode::BackendUnavailable,
           "An unconfigured model slot must report BackendUnavailable");
     const auto emptyWithoutBackend = iiAudioGen::Generator{}.loadModel({});

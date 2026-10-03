@@ -1,4 +1,5 @@
 #include <iiAudioGen/iiAudioGen.h>
+#include <iiAudioGen/Diffusers.h>
 
 #include <cmath>
 #include <utility>
@@ -9,6 +10,8 @@ ModelLoadOutcome Backend::loadModel(const std::filesystem::path&) {
     return std::unexpected(Error{ErrorCode::BackendUnavailable,
                                  "This backend does not implement audio model loading"});
 }
+
+Generator::Generator() : Generator(createDiffusersBackend()) {}
 
 Generator::Generator(std::shared_ptr<Backend> backend)
     : backend_(std::move(backend)) {}

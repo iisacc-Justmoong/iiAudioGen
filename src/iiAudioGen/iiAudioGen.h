@@ -33,6 +33,7 @@ enum class ErrorCode {
     GenerationFailed,
     InvalidModel,
     ModelLoadFailed,
+    ModelNotLoaded,
 };
 
 struct Error {
@@ -52,7 +53,8 @@ public:
 
 class IIAUDIOGEN_EXPORT Generator {
 public:
-    explicit Generator(std::shared_ptr<Backend> backend = {});
+    Generator();
+    explicit Generator(std::shared_ptr<Backend> backend);
     [[nodiscard]] ModelLoadOutcome loadModel(const std::filesystem::path& modelPath);
     [[nodiscard]] GenerationOutcome generate(const GenerationRequest& request) const;
 
