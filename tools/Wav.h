@@ -1,3 +1,5 @@
+#include <iiFileProviderStorage.h>
+#include <iiFileProviderNative.h>
 #pragma once
 
 #include <iiAudioGen/iiAudioGen.h>
@@ -16,7 +18,10 @@ inline void number(std::ostream& stream, std::uint32_t value, int bytes) {
 inline bool writeWav(const std::filesystem::path& path, const GenerationResult& audio) {
     if (audio.samples.size() > (std::numeric_limits<std::uint32_t>::max() - 36) / 2 ||
         audio.channels == 0 || audio.sampleRate == 0 || audio.samples.size() % audio.channels != 0) return false;
-    std::ofstream output(path, std::ios::binary);
+    if (std::any_of(audio.samples.begin(), audio.samples.end(), [](float value) { return !std::isfinite(value); })) return false;
+    try {
+    iiFileProvider::native::StagedFile staged(path);
+    iiFileProvider::native::OutputFile output(staged.path(), std::ios::binary);
     if (!output) return false;
     const auto size = static_cast<std::uint32_t>(audio.samples.size() * 2);
     output.write("RIFF", 4); number(output, 36 + size, 4); output.write("WAVEfmt ", 8);
@@ -30,7 +35,8 @@ inline bool writeWav(const std::filesystem::path& path, const GenerationResult& 
         number(output, static_cast<std::uint16_t>(value), 2);
     }
     output.close();
-    return static_cast<bool>(output);
+    return static_cast<bool>(output) && staged.publish().succeeded;
+    } catch (const iiFileProvider::native::FileError &) { return false; }
 }
 
 } // namespace iiAudioGen::tools

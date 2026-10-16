@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.24)
 project(iiAudioGen VERSION 0.3.0 LANGUAGES CXX)
+# File creation is owned by iiFileProvider.
+find_package(iiFileProviderNative 0.6 CONFIG REQUIRED HINTS "$ENV{IIFILEPROVIDER_PREFIX}" "$ENV{HOME}/.local/SDK/iiFileProvider")
+link_libraries(iiFileProvider::Native)
+
+
+
+
+
 
 if(PROJECT_IS_TOP_LEVEL AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     if(DEFINED ENV{HOME} AND NOT "$ENV{HOME}" STREQUAL "")
@@ -15,6 +23,11 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
 include(CTest)
+if(BUILD_TESTING)
+    add_executable(iiAudioGenGeneratedFileTests tests/GeneratedFileTests.cpp)
+    target_link_libraries(iiAudioGenGeneratedFileTests PRIVATE iiAudioGen)
+    add_test(NAME iiAudioGen.GeneratedFile COMMAND iiAudioGenGeneratedFileTests)
+endif()
 option(BUILD_SHARED_LIBS "Build iiAudioGen as a shared library" ON)
 find_package(Threads REQUIRED)
 
