@@ -1,6 +1,11 @@
 # iiAudioGen
 
-C++23 SDK for local, prompt-conditioned audio generation, version 0.3.0. The default `Generator` uses an isolated, persistent Python worker running the official Diffusers `AudioLDMPipeline` or `AudioLDM2Pipeline`. The C++ library and public API have no Qt dependency.
+Package release: **0.3.1** (2026-10-19). This patch packages the current
+source snapshot; build, test and installation evidence is recorded in the SDK
+patch-release report. Earlier versioned feature notes remain historical.
+
+
+C++23 SDK for local, prompt-conditioned audio generation, version 0.3.1. The default `Generator` uses an isolated, persistent Python worker running the official Diffusers `AudioLDMPipeline` or `AudioLDM2Pipeline`. The C++ library and public API have no Qt dependency.
 
 A local model directory is loaded once with `loadModel()`. `generate()` passes the text prompt, duration and optional seed to the loaded pipeline, validates the returned PCM, resamples it to the requested rate and returns interleaved floating-point samples. The SDK does not download models during loading or inference.
 

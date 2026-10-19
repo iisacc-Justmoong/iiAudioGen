@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(iiAudioGen VERSION 0.3.0 LANGUAGES CXX)
+project(iiAudioGen VERSION 0.3.1 LANGUAGES CXX)
 # File creation is owned by iiFileProvider.
 find_package(iiFileProviderNative 0.6 CONFIG REQUIRED HINTS "$ENV{IIFILEPROVIDER_PREFIX}" "$ENV{HOME}/.local/SDK/iiFileProvider")
 link_libraries(iiFileProvider::Native)
