@@ -1,5 +1,9 @@
 # iiAudioGen 0.3.0 검증 기록
 
+## 2026-10-27 ONNX model boundary
+
+On macOS arm64, the `build/safetensors-policy/` C++ build and all eight CTest cases passed. A recording backend confirms case-insensitive ONNX rejection and forwarding of GGUF, safetensors and other paths. A real directory named with an `.onnx` suffix is treated as a directory. This contract test does not prove GGUF audio inference. The default Diffusers backend continues to require a local model directory, safetensors weights and Python.
+
 검증일은 2026-10-03이며 환경은 macOS arm64, Apple M1 Max, 32GiB 메모리이다. C++ 빌드는 Apple Clang 21.0.0, CMake 4.4.3, Ninja를 사용했다. 실제 모델 연산은 CPU에서 수행했다.
 
 ## 빌드·계약·설치 소비자

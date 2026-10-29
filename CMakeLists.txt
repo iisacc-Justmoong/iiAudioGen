@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
 project(iiAudioGen VERSION 0.3.1 LANGUAGES CXX)
-# File creation is owned by iiFileProvider.
-find_package(iiFileProviderNative 0.6 CONFIG REQUIRED HINTS "$ENV{IIFILEPROVIDER_PREFIX}" "$ENV{HOME}/.local/SDK/iiFileProvider")
-link_libraries(iiFileProvider::Native)
 
 
 
@@ -23,11 +20,6 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
 include(CTest)
-if(BUILD_TESTING)
-    add_executable(iiAudioGenGeneratedFileTests tests/GeneratedFileTests.cpp)
-    target_link_libraries(iiAudioGenGeneratedFileTests PRIVATE iiAudioGen)
-    add_test(NAME iiAudioGen.GeneratedFile COMMAND iiAudioGenGeneratedFileTests)
-endif()
 option(BUILD_SHARED_LIBS "Build iiAudioGen as a shared library" ON)
 find_package(Threads REQUIRED)
 
@@ -77,27 +69,9 @@ install(FILES README.md DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen)
 install(DIRECTORY docs/ DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen/docs)
 install(FILES runtime/requirements.txt DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen/runtime)
 
-add_executable(iiAudioGenGenerate tools/generate.cpp)
-target_link_libraries(iiAudioGenGenerate PRIVATE iiAudioGen::iiAudioGen)
-set_target_properties(iiAudioGenGenerate PROPERTIES OUTPUT_NAME iiaudio-generate CXX_EXTENSIONS OFF)
-if(APPLE)
-    set_target_properties(iiAudioGenGenerate PROPERTIES INSTALL_RPATH "@loader_path/../${CMAKE_INSTALL_LIBDIR}")
-elseif(UNIX)
-    set_target_properties(iiAudioGenGenerate PROPERTIES INSTALL_RPATH "$ORIGIN/../${CMAKE_INSTALL_LIBDIR}")
-endif()
-install(TARGETS iiAudioGenGenerate RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-
 if(BUILD_TESTING)
-    add_executable(iiAudioGenRealInference tests/real_inference.cpp)
-    target_link_libraries(iiAudioGenRealInference PRIVATE iiAudioGen::iiAudioGen)
-    set(IIAUDIOGEN_TEST_MODEL "" CACHE PATH "Optional real local AudioLDM model")
-    set(IIAUDIOGEN_TEST_PYTHON "python3" CACHE FILEPATH "Python containing the inference requirements")
-    if(IIAUDIOGEN_TEST_MODEL)
-        file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/real-inference")
-        add_test(NAME iiAudioGen.real_inference COMMAND iiAudioGenRealInference
-            "${IIAUDIOGEN_TEST_MODEL}" "${IIAUDIOGEN_TEST_PYTHON}" "${CMAKE_CURRENT_BINARY_DIR}/real-inference")
-        set_tests_properties(iiAudioGen.real_inference PROPERTIES TIMEOUT 600 LABELS "real-model")
-    endif()
+    add_test(NAME iiAudioGen.sdk_boundary COMMAND ${CMAKE_COMMAND}
+        "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/sdk_boundary.cmake")
     find_package(Python3 3.10 COMPONENTS Interpreter REQUIRED)
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fixtures")
     add_test(NAME iiAudioGen.worker COMMAND "${Python3_EXECUTABLE}" -B
@@ -120,6 +94,8 @@ if(BUILD_TESTING)
     endif()
     add_executable(iiAudioGenTests tests/generation.cpp)
     target_link_libraries(iiAudioGenTests PRIVATE iiAudioGen::iiAudioGen)
+    target_compile_definitions(iiAudioGenTests PRIVATE
+        "IIAUDIOGEN_TEST_FIXTURES=\"${CMAKE_CURRENT_SOURCE_DIR}/resources/model-contract\"")
     set_target_properties(iiAudioGenTests PROPERTIES CXX_EXTENSIONS OFF)
     foreach(_case request unavailable delegation error model)
         add_test(NAME iiAudioGen.${_case} COMMAND iiAudioGenTests ${_case})

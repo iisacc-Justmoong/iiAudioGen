@@ -14,7 +14,7 @@ Release 빌드·실행 검사·설치를 완료하였다. 등록 검사 7개 중
 
 - [iiFileProvider](../../../SDK/iiFileProvider/docs/WindowsBuildAndRun.md)
 
-- Qt에 의존하지 않는 C++23 라이브러리이며 iiFileProvider Native가 필요하다.
+- 현재 생성 라이브러리는 Qt나 다른 SDK에 의존하지 않는다. WAV CLI는 독립 소비자 프로젝트에서 iiFileProvider Native를 연결한다. 아래 Windows 검증은 이 분리 전의 기록이다.
 - 실제 생성에는 별도의 Python 환경, `runtime/requirements.txt`의 패키지 및 로컬 AudioLDM/AudioLDM2 모델이 필요하다. 기본 SDK 검증은 실제 모델 가중치 추론의 성공을 보증하지 않는다.
 
 프로젝트별 Windows 조건은 다음과 같다.

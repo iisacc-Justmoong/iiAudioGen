@@ -1,6 +1,6 @@
 # iiAudioGen
 
-[Windows 빌드 및 실행](docs/WindowsBuildAndRun.md)
+[Windows build and execution](docs/WindowsBuildAndRun.md)
 
 Package release: **0.3.1** (2026-10-19). This patch packages the current
 source snapshot; build, test and installation evidence is recorded in the SDK
@@ -11,9 +11,13 @@ C++23 SDK for local, prompt-conditioned audio generation, version 0.3.1. The def
 
 A local model directory is loaded once with `loadModel()`. `generate()` passes the text prompt, duration and optional seed to the loaded pipeline, validates the returned PCM, resamples it to the requested rate and returns interleaved floating-point samples. The SDK does not download models during loading or inference.
 
+`Generator::loadModel()` rejects `.onnx` model files, regardless of extension case, before invoking a backend. GGUF, safetensors and other paths are forwarded to the selected backend, which must validate actual format and architecture support. The default Diffusers backend accepts local model directories and loads weights with `use_safetensors=True`; forwarding a GGUF path does not mean that this backend implements GGUF inference.
+
+Fixed project assets belong under `resources/`; no model weights are bundled.
+
 ## Requirements and build
 
-The library requires CMake 3.24 or later, C++23 `std::expected`, and native process/thread APIs. Tests additionally require Python 3.10 or later. Actual inference requires a Python environment containing [runtime/requirements.txt](runtime/requirements.txt); Python 3.12 was used for local verification.
+The library requires CMake 3.24 or later, C++23 `std::expected`, and native process/thread APIs. It does not discover or link another iiSDK module. Tests additionally require Python 3.10 or later. Actual inference requires a Python environment containing [runtime/requirements.txt](runtime/requirements.txt); Python 3.12 was used for local verification.
 
 ```sh
 python3.12 -m venv build/python
@@ -64,16 +68,27 @@ Output duration is limited to 60 seconds, sample rates to 8000..192000 Hz and ch
 
 ## CLI
 
-`iiaudio-generate` uses the same C++ API and writes 16-bit PCM WAV:
+`iiaudio-generate` is a separately configured consumer application. It links
+iiAudioGen and iiFileProvider independently and publishes 16-bit PCM WAV through
+iiFileProvider. Build and install the two SDK packages first, then configure the
+tool; it is no longer installed by the library's CMake project:
 
 ```sh
-build/iiaudio-generate \
-  --model "$PWD/build/models/audioldm2" \
+cmake -S tools -B build/tools \
+  -DiiAudioGen_DIR="$PWD/build/stage/lib/cmake/iiAudioGen" \
+  -DiiFileProviderNative_DIR="$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative"
+cmake --build build/tools --config Release
+build/tools/iiaudio-generate \
+  --model "$PWD/resources/models/audioldm2" \
   --python "$PWD/build/python/bin/python" \
   --prompt "Gentle rain falling on leaves in a quiet forest." \
-  --output "$PWD/build/rain.wav" \
+  --output "$PWD/resources/rain.wav" \
   --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42
 ```
+
+The tool project also owns the generated-file publication test and optional
+real-model acceptance test. Installing the library alone does not install the
+CLI; install the separately built tool project when that executable is needed.
 
 Prepare the model separately using the provider's normal download procedure. Model weights are not included in this repository or installed package. The reference CVSSP AudioLDM models used for development declare **CC-BY-NC-SA-4.0**; consult their [AudioLDM](https://huggingface.co/cvssp/audioldm-s-full-v2) and [AudioLDM2](https://huggingface.co/cvssp/audioldm2) model cards before selecting a model for commercial work.
 
@@ -116,3 +131,12 @@ SPDX-License-Identifier: MIT
 The original code and documentation in this repository are licensed under the
 [MIT License](LICENSE). Third-party code, libraries, fonts, tools, and model
 weights retain their respective licenses.
+
+<!-- workspace-docs:readme:start -->
+## Documentation entry points
+
+- Human overview: this English `README.md`.
+- Agent instructions: [AGENT.md](AGENT.md).
+- Human documentation: [documentation index](docs/README.md).
+- Structured agent documentation: [agent index](docs/agent-index.json).
+<!-- workspace-docs:readme:end -->

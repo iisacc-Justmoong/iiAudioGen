@@ -22,6 +22,15 @@ ModelLoadOutcome Generator::loadModel(const std::filesystem::path& modelPath) {
         return std::unexpected(Error{ErrorCode::InvalidModel,
                                      "Model path must not be empty or contain null characters"});
     }
+    // Reject ONNX files before dispatch; backends validate all other formats.
+    auto extension = modelPath.extension().u8string();
+    for (auto& ch : extension) if (ch >= u8'A' && ch <= u8'Z') ch += u8'a' - u8'A';
+    if (extension == u8".onnx") {
+        std::error_code error;
+        if (!std::filesystem::is_directory(modelPath, error)) {
+            return std::unexpected(Error{ErrorCode::InvalidModel, "ONNX model files are not supported"});
+        }
+    }
     if (!backend_) {
         return std::unexpected(Error{ErrorCode::BackendUnavailable,
                                      "No audio generation backend is configured"});

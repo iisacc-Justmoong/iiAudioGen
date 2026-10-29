@@ -1,0 +1,17 @@
+if(NOT DEFINED SOURCE_ROOT)
+    message(FATAL_ERROR "SOURCE_ROOT is required")
+endif()
+file(READ "${SOURCE_ROOT}/CMakeLists.txt" build_script)
+file(READ "${SOURCE_ROOT}/cmake/iiAudioGenConfig.cmake.in" package_config)
+if("${build_script}${package_config}" MATCHES "iiFileProvider")
+    message(FATAL_ERROR "The iiAudioGen library must not discover or link iiFileProvider")
+endif()
+file(GLOB_RECURSE sources LIST_DIRECTORIES false
+    "${SOURCE_ROOT}/src/*.h" "${SOURCE_ROOT}/src/*.cpp" "${SOURCE_ROOT}/runtime/*.py")
+foreach(source IN LISTS sources)
+    file(READ "${source}" contents)
+    if(contents MATCHES "#[ \t]*include[ \t]*[<\"]iiFileProvider" OR
+       contents MATCHES "(^|\n)[ \t]*(from|import)[ \t]+ii_file_provider")
+        message(FATAL_ERROR "iiAudioGen library dependency in ${source}")
+    endif()
+endforeach()

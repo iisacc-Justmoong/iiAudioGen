@@ -2,9 +2,13 @@
 
 `iiAudioGen` 0.3.0은 로컬 AudioLDM·AudioLDM2 모델과 프롬프트를 이용해 오디오를 생성하는 C++23 SDK이다. 공개 API와 프로세스 제어는 C++로 구현하며, 모델 연산은 공식 Diffusers·PyTorch 런타임에서 수행한다. Qt는 사용하지 않는다.
 
+생성 라이브러리는 다른 SDK를 링크하지 않으며 float PCM을 호출자에게 반환한다.
+WAV 직렬화 CLI는 독립 소비자 프로젝트에서 iiAudioGen과 iiFileProvider를 각각
+연결하고, 저장 파일의 단계적 게시를 iiFileProvider에 위임한다.
+
 ## 모델 로딩과 생성 절차
 
-1. `Generator::loadModel(modelPath)`가 빈 경로·널 문자를 검증하고 백엔드로 전달한다.
+1. `Generator::loadModel(modelPath)` rejects empty paths, embedded NUL characters and `.onnx` model files before calling the backend. GGUF, safetensors and other paths are forwarded; the backend validates the actual format and architecture. Model directories may contain configuration and tokenizer assets.
 2. 기본 Diffusers 백엔드는 실제 로컬 모델 디렉터리를 확인하고, 셸을 거치지 않는 별도 Python 프로세스를 시작한다.
 3. 워커가 `model_index.json`의 클래스 이름을 확인하고 AudioLDM 또는 AudioLDM2 파이프라인을 선택한다. 로컬 파일만 사용하고 Safetensors 가중치를 요구한다. 사용자 모델의 임의 Python 코드는 실행하지 않는다.
 4. 텍스트 인코더, 확산 모델, VAE, 보코더 등 파이프라인 구성요소가 실제로 로딩된 뒤에만 성공을 반환한다. 파이프라인은 같은 워커에 유지된다. 모델 교체가 실패하면 기존 파이프라인을 유지한다.
@@ -19,6 +23,8 @@
 `GenerationRequest`는 프롬프트, 초 단위 길이, 샘플 레이트, 채널 수와 선택적 64비트 시드를 담는다. `GenerationResult`는 채널이 번갈아 배치된 부동소수점 PCM과 실제 출력 형식을 담는다.
 
 `ModelLoadOutcome`은 `std::expected<void, Error>`, `GenerationOutcome`은 `std::expected<GenerationResult, Error>`이다. 오류 종류는 `InvalidRequest`, `BackendUnavailable`, `GenerationFailed`, `InvalidModel`, `ModelLoadFailed`, `ModelNotLoaded`이다. 기본 백엔드에서는 로딩 전 생성 호출을 거절한다.
+
+확장자 검사는 모델 바이트의 유효성이나 구조 호환성을 보증하지 않는다. 주입된 `Backend`는 실제 가중치 형식과 자신이 지원하는 모델 구조를 검증해야 한다. 기본 Diffusers 백엔드는 단일 파일이 아니라 모델 디렉터리만 받으며 `use_safetensors=True`로 가중치를 로딩한다.
 
 `Generator{}`는 기본 Diffusers 백엔드를 만든다. 기본 설정은 PATH의 `python3`, CPU, 50회 추론 단계, 요청당 5분 시간 제한이다. `DiffusersOptions`와 `createDiffusersBackend()`로 Python 실행 파일·장치·단계 수·시간 제한을 명시할 수 있다. 빈 백엔드가 필요한 경우 `Generator{nullptr}`를 사용한다. 외부 `Backend` 구현 주입도 유지한다.
 

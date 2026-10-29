@@ -1,0 +1,529 @@
+{
+  "format": "iisacc.agent-document",
+  "schema_version": 1,
+  "document_id": "urn:iisacc:document:582b55e745e67b22f8734f452b6c78d546db76b787b99e1f86cfb27ba85fc35e",
+  "project": {
+    "id": "urn:iisacc:project:SDK%2FiiAudioGen",
+    "name": "iiAudioGen",
+    "root": "SDK/iiAudioGen",
+    "kind": "sdk"
+  },
+  "source": {
+    "path": "docs/Verification.md",
+    "sha256": "029acd7fac52532c1bcc6ebec88ff7b302448039acfb4c5361100f1dc77900ba",
+    "bytes": 5731,
+    "line_count": 48,
+    "encoding": "utf-8",
+    "language": "ko"
+  },
+  "document": {
+    "title": "iiAudioGen 0.3.0 검증 기록",
+    "role": "evidence",
+    "authority": "markdown_source"
+  },
+  "blocks": [
+    {
+      "id": "b000001",
+      "kind": "heading",
+      "start_line": 1,
+      "end_line": 1,
+      "raw": "# iiAudioGen 0.3.0 검증 기록\n",
+      "level": 1,
+      "title": "iiAudioGen 0.3.0 검증 기록"
+    },
+    {
+      "id": "b000002",
+      "kind": "blank",
+      "start_line": 2,
+      "end_line": 2,
+      "raw": "\n"
+    },
+    {
+      "id": "b000003",
+      "kind": "heading",
+      "start_line": 3,
+      "end_line": 3,
+      "raw": "## 2026-10-27 ONNX model boundary\n",
+      "level": 2,
+      "title": "2026-10-27 ONNX model boundary"
+    },
+    {
+      "id": "b000004",
+      "kind": "blank",
+      "start_line": 4,
+      "end_line": 4,
+      "raw": "\n"
+    },
+    {
+      "id": "b000005",
+      "kind": "paragraph",
+      "start_line": 5,
+      "end_line": 5,
+      "raw": "On macOS arm64, the `build/safetensors-policy/` C++ build and all eight CTest cases passed. A recording backend confirms case-insensitive ONNX rejection and forwarding of GGUF, safetensors and other paths. A real directory named with an `.onnx` suffix is treated as a directory. This contract test does not prove GGUF audio inference. The default Diffusers backend continues to require a local model directory, safetensors weights and Python.\n"
+    },
+    {
+      "id": "b000006",
+      "kind": "blank",
+      "start_line": 6,
+      "end_line": 6,
+      "raw": "\n"
+    },
+    {
+      "id": "b000007",
+      "kind": "paragraph",
+      "start_line": 7,
+      "end_line": 7,
+      "raw": "검증일은 2026-10-03이며 환경은 macOS arm64, Apple M1 Max, 32GiB 메모리이다. C++ 빌드는 Apple Clang 21.0.0, CMake 4.4.3, Ninja를 사용했다. 실제 모델 연산은 CPU에서 수행했다.\n"
+    },
+    {
+      "id": "b000008",
+      "kind": "blank",
+      "start_line": 8,
+      "end_line": 8,
+      "raw": "\n"
+    },
+    {
+      "id": "b000009",
+      "kind": "heading",
+      "start_line": 9,
+      "end_line": 9,
+      "raw": "## 빌드·계약·설치 소비자\n",
+      "level": 2,
+      "title": "빌드·계약·설치 소비자"
+    },
+    {
+      "id": "b000010",
+      "kind": "blank",
+      "start_line": 10,
+      "end_line": 10,
+      "raw": "\n"
+    },
+    {
+      "id": "b000011",
+      "kind": "paragraph",
+      "start_line": 11,
+      "end_line": 11,
+      "raw": "공유 라이브러리와 정적 라이브러리 구성이 모두 빌드되었다. 각 구성의 CTest 7개와 설치 패키지만 참조하는 소비자 테스트 1개가 통과했다. 전체는 16개 CTest 실행이다. Python 워커 테스트 항목 내부에서는 별도의 여러 사례를 검증하므로 실행 수와 내부 사례 수를 혼동하지 않는다.\n"
+    },
+    {
+      "id": "b000012",
+      "kind": "blank",
+      "start_line": 12,
+      "end_line": 12,
+      "raw": "\n"
+    },
+    {
+      "id": "b000013",
+      "kind": "paragraph",
+      "start_line": 13,
+      "end_line": 13,
+      "raw": "일반 테스트는 요청·모델 입력·오류 계약, 실제 모델 미로딩 상태, 로컬 전용 안전 가중치 로딩 설정, 사용자 컴포넌트 거절, 실패한 모델 교체의 기존 상태 유지, 이진 응답 분할, 비유한 PCM, 과도한 응답 길이, 프로세스 종료, 시간 초과와 재시작을 검증한다. 프로토콜 테스트의 고정 PCM은 모델 추론의 증거로 사용하지 않는다.\n"
+    },
+    {
+      "id": "b000014",
+      "kind": "blank",
+      "start_line": 14,
+      "end_line": 14,
+      "raw": "\n"
+    },
+    {
+      "id": "b000015",
+      "kind": "paragraph",
+      "start_line": 15,
+      "end_line": 15,
+      "raw": "설치 소비자는 `find_package(iiAudioGen 0.3 CONFIG REQUIRED)`와 설치된 `<iiAudioGen/Diffusers.h>`를 사용하며 공개 백엔드 팩터리와 생성 API를 호출했다. 검증용 설치 위치는 `build/stage`와 `build/static/stage`이다.\n"
+    },
+    {
+      "id": "b000016",
+      "kind": "blank",
+      "start_line": 16,
+      "end_line": 16,
+      "raw": "\n"
+    },
+    {
+      "id": "b000017",
+      "kind": "heading",
+      "start_line": 17,
+      "end_line": 17,
+      "raw": "## 실제 모델과 런타임\n",
+      "level": 2,
+      "title": "실제 모델과 런타임"
+    },
+    {
+      "id": "b000018",
+      "kind": "blank",
+      "start_line": 18,
+      "end_line": 18,
+      "raw": "\n"
+    },
+    {
+      "id": "b000019",
+      "kind": "paragraph",
+      "start_line": 19,
+      "end_line": 19,
+      "raw": "전용 Python 3.12.14 환경에 `runtime/requirements.txt`를 설치했으며 `pip check`가 성공했다. 주요 버전은 PyTorch 2.13.0, Diffusers 0.35.2, Transformers 4.48.3, Hugging Face Hub 0.36.0, NumPy 2.5.2, SciPy 1.18.1이다. 기존 iiLocalDiffusion 환경은 변경하지 않았다.\n"
+    },
+    {
+      "id": "b000020",
+      "kind": "blank",
+      "start_line": 20,
+      "end_line": 20,
+      "raw": "\n"
+    },
+    {
+      "id": "b000021",
+      "kind": "table",
+      "start_line": 21,
+      "end_line": 24,
+      "raw": "| 모델 | 공급자 리비전 | 검증 |\n| --- | --- | --- |\n| `cvssp/audioldm2` | `c8e7e189d324425c05c4c2f81214041ef4107983` | 실제 로딩, 같은 런타임에서 3회 생성, 시드 재현성, 프롬프트에 따른 PCM 차이, 설치된 CLI의 스테레오 출력 |\n| `cvssp/audioldm-s-full-v2` | `feeb3d14203495a4b6ac0893cbdedb2159b4819c` | 설치된 CLI로 실제 로딩·생성·16kHz WAV 저장 |\n",
+      "columns": [
+        "모델",
+        "공급자 리비전",
+        "검증"
+      ],
+      "rows": [
+        [
+          "`cvssp/audioldm2`",
+          "`c8e7e189d324425c05c4c2f81214041ef4107983`",
+          "실제 로딩, 같은 런타임에서 3회 생성, 시드 재현성, 프롬프트에 따른 PCM 차이, 설치된 CLI의 스테레오 출력"
+        ],
+        [
+          "`cvssp/audioldm-s-full-v2`",
+          "`feeb3d14203495a4b6ac0893cbdedb2159b4819c`",
+          "설치된 CLI로 실제 로딩·생성·16kHz WAV 저장"
+        ]
+      ]
+    },
+    {
+      "id": "b000022",
+      "kind": "blank",
+      "start_line": 25,
+      "end_line": 25,
+      "raw": "\n"
+    },
+    {
+      "id": "b000023",
+      "kind": "paragraph",
+      "start_line": 26,
+      "end_line": 26,
+      "raw": "각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치와 생성 결과는 `build/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.\n"
+    },
+    {
+      "id": "b000024",
+      "kind": "blank",
+      "start_line": 27,
+      "end_line": 27,
+      "raw": "\n"
+    },
+    {
+      "id": "b000025",
+      "kind": "paragraph",
+      "start_line": 28,
+      "end_line": 28,
+      "raw": "AudioLDM2 수락 테스트는 CPU, 20단계, 3초, 44.1kHz 모노, 시드 42로 진행했다. 첫 프롬프트는 `Gentle rain falling on leaves in a quiet forest.`이며 이를 두 번 실행했다. 세 번째 프롬프트는 `A church bell ringing repeatedly in the distance.`이다. 동일 프롬프트·동일 시드의 전체 float PCM이 정확히 일치했고, 다른 프롬프트의 PCM은 달랐다. 출력은 각각 132,300프레임이었다. 세 번의 생성 시간은 약 44.37초이며 모델 로딩 시간은 이 측정에 포함하지 않았다.\n"
+    },
+    {
+      "id": "b000026",
+      "kind": "blank",
+      "start_line": 29,
+      "end_line": 29,
+      "raw": "\n"
+    },
+    {
+      "id": "b000027",
+      "kind": "heading",
+      "start_line": 30,
+      "end_line": 30,
+      "raw": "## 결과 파일\n",
+      "level": 2,
+      "title": "결과 파일"
+    },
+    {
+      "id": "b000028",
+      "kind": "blank",
+      "start_line": 31,
+      "end_line": 31,
+      "raw": "\n"
+    },
+    {
+      "id": "b000029",
+      "kind": "table",
+      "start_line": 32,
+      "end_line": 38,
+      "raw": "| 파일 | 형식 | SHA-256 |\n| --- | --- | --- |\n| `build/real-audioldm2/rain.wav` | 3초, 44.1kHz, 모노, PCM16 | `6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989` |\n| `build/real-audioldm2/bells.wav` | 3초, 44.1kHz, 모노, PCM16 | `68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6` |\n| `build/real-audioldm2/installed-stereo.wav` | 2초, 48kHz, 2채널, PCM16 | `5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f` |\n| `build/real-audioldm/installed.wav` | 1초, 16kHz, 모노, PCM16 | `2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df` |\n| `build/real-audioldm2/final.wav` | 최종 설치본, 1초, 16kHz, 모노, PCM16 | `26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f` |\n",
+      "columns": [
+        "파일",
+        "형식",
+        "SHA-256"
+      ],
+      "rows": [
+        [
+          "`build/real-audioldm2/rain.wav`",
+          "3초, 44.1kHz, 모노, PCM16",
+          "`6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989`"
+        ],
+        [
+          "`build/real-audioldm2/bells.wav`",
+          "3초, 44.1kHz, 모노, PCM16",
+          "`68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6`"
+        ],
+        [
+          "`build/real-audioldm2/installed-stereo.wav`",
+          "2초, 48kHz, 2채널, PCM16",
+          "`5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f`"
+        ],
+        [
+          "`build/real-audioldm/installed.wav`",
+          "1초, 16kHz, 모노, PCM16",
+          "`2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df`"
+        ],
+        [
+          "`build/real-audioldm2/final.wav`",
+          "최종 설치본, 1초, 16kHz, 모노, PCM16",
+          "`26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f`"
+        ]
+      ]
+    },
+    {
+      "id": "b000030",
+      "kind": "blank",
+      "start_line": 39,
+      "end_line": 39,
+      "raw": "\n"
+    },
+    {
+      "id": "b000031",
+      "kind": "paragraph",
+      "start_line": 40,
+      "end_line": 40,
+      "raw": "WAV 헤더와 프레임 수는 Python 표준 `wave`로 독립적으로 읽어 검증했다. C++ 백엔드는 양수 프레임 수, 요청 형식 일치와 모든 float PCM 샘플의 유한성을 확인한다. AudioLDM2 빗소리 WAV의 RMS는 약 0.015694, 종소리 WAV의 RMS는 약 0.137071이었다. 모노 생성 모델의 2채널 출력은 양쪽 채널을 복제하는 형식 변환이며 공간 스테레오 생성 증거가 아니다.\n"
+    },
+    {
+      "id": "b000032",
+      "kind": "blank",
+      "start_line": 41,
+      "end_line": 41,
+      "raw": "\n"
+    },
+    {
+      "id": "b000033",
+      "kind": "paragraph",
+      "start_line": 42,
+      "end_line": 42,
+      "raw": "최종 모델 구성 검증은 공식 AudioLDM2의 `audioldm2` 내부 컴포넌트를 허용하고 사용자 Python 컴포넌트와 로컬 Python 덮어쓰기를 거절한다. 이 변경 후 두 빌드 구성과 설치 소비자의 16개 CTest를 다시 통과했으며, 최종 설치 CLI에서 AudioLDM2를 로딩하고 `final.wav`의 16,000프레임을 실제 생성했다.\n"
+    },
+    {
+      "id": "b000034",
+      "kind": "blank",
+      "start_line": 43,
+      "end_line": 43,
+      "raw": "\n"
+    },
+    {
+      "id": "b000035",
+      "kind": "heading",
+      "start_line": 44,
+      "end_line": 44,
+      "raw": "## 사용 조건과 검증 한계\n",
+      "level": 2,
+      "title": "사용 조건과 검증 한계"
+    },
+    {
+      "id": "b000036",
+      "kind": "blank",
+      "start_line": 45,
+      "end_line": 45,
+      "raw": "\n"
+    },
+    {
+      "id": "b000037",
+      "kind": "paragraph",
+      "start_line": 46,
+      "end_line": 46,
+      "raw": "검증 모델의 모델 카드에는 CC-BY-NC-SA-4.0이 선언되어 있다. 이는 개발용 참고 모델이며 상용 작업에 사용할 모델은 해당 공급자의 조건에 맞게 선택해야 한다. [AudioLDM2 모델 카드](https://huggingface.co/cvssp/audioldm2), [AudioLDM 모델 카드](https://huggingface.co/cvssp/audioldm-s-full-v2)가 근거이다.\n"
+    },
+    {
+      "id": "b000038",
+      "kind": "blank",
+      "start_line": 47,
+      "end_line": 47,
+      "raw": "\n"
+    },
+    {
+      "id": "b000039",
+      "kind": "paragraph",
+      "start_line": 48,
+      "end_line": 48,
+      "raw": "검증한 범위는 실제 프롬프트 조건화, 가중치 로딩, 파형 생성, 형식 변환, 설치된 C++ SDK 경로와 결과 파일이다. 주관적인 음질, 프롬프트 의미 일치도, 다른 체크포인트, Windows·Linux 실행, MPS·CUDA와 Neural Engine 실행은 검증하지 않았다.\n"
+    }
+  ],
+  "outline": [
+    {
+      "block_id": "b000001",
+      "parent_id": null,
+      "level": 1,
+      "title": "iiAudioGen 0.3.0 검증 기록",
+      "anchor": "iiaudiogen-030-검증-기록",
+      "start_line": 1
+    },
+    {
+      "block_id": "b000003",
+      "parent_id": "b000001",
+      "level": 2,
+      "title": "2026-10-27 ONNX model boundary",
+      "anchor": "2026-10-27-onnx-model-boundary",
+      "start_line": 3
+    },
+    {
+      "block_id": "b000009",
+      "parent_id": "b000001",
+      "level": 2,
+      "title": "빌드·계약·설치 소비자",
+      "anchor": "빌드계약설치-소비자",
+      "start_line": 9
+    },
+    {
+      "block_id": "b000017",
+      "parent_id": "b000001",
+      "level": 2,
+      "title": "실제 모델과 런타임",
+      "anchor": "실제-모델과-런타임",
+      "start_line": 17
+    },
+    {
+      "block_id": "b000027",
+      "parent_id": "b000001",
+      "level": 2,
+      "title": "결과 파일",
+      "anchor": "결과-파일",
+      "start_line": 30
+    },
+    {
+      "block_id": "b000035",
+      "parent_id": "b000001",
+      "level": 2,
+      "title": "사용 조건과 검증 한계",
+      "anchor": "사용-조건과-검증-한계",
+      "start_line": 44
+    }
+  ],
+  "indexes": {
+    "directive_candidates": [
+      {
+        "block_id": "b000011",
+        "line": 11,
+        "text": "공유 라이브러리와 정적 라이브러리 구성이 모두 빌드되었다. 각 구성의 CTest 7개와 설치 패키지만 참조하는 소비자 테스트 1개가 통과했다. 전체는 16개 CTest 실행이다. Python 워커 테스트 항목 내부에서는 별도의 여러 사례를 검증하므로 실행 수와 내부 사례 수를 혼동하지 않는다.",
+        "basis": "lexical_match",
+        "context": "paragraph"
+      },
+      {
+        "block_id": "b000013",
+        "line": 13,
+        "text": "일반 테스트는 요청·모델 입력·오류 계약, 실제 모델 미로딩 상태, 로컬 전용 안전 가중치 로딩 설정, 사용자 컴포넌트 거절, 실패한 모델 교체의 기존 상태 유지, 이진 응답 분할, 비유한 PCM, 과도한 응답 길이, 프로세스 종료, 시간 초과와 재시작을 검증한다. 프로토콜 테스트의 고정 PCM은 모델 추론의 증거로 사용하지 않는다.",
+        "basis": "lexical_match",
+        "context": "paragraph"
+      },
+      {
+        "block_id": "b000015",
+        "line": 15,
+        "text": "설치 소비자는 `find_package(iiAudioGen 0.3 CONFIG REQUIRED)`와 설치된 `<iiAudioGen/Diffusers.h>`를 사용하며 공개 백엔드 팩터리와 생성 API를 호출했다. 검증용 설치 위치는 `build/stage`와 `build/static/stage`이다.",
+        "basis": "lexical_match",
+        "context": "paragraph"
+      },
+      {
+        "block_id": "b000023",
+        "line": 26,
+        "text": "각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치와 생성 결과는 `build/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.",
+        "basis": "lexical_match",
+        "context": "paragraph"
+      },
+      {
+        "block_id": "b000037",
+        "line": 46,
+        "text": "검증 모델의 모델 카드에는 CC-BY-NC-SA-4.0이 선언되어 있다. 이는 개발용 참고 모델이며 상용 작업에 사용할 모델은 해당 공급자의 조건에 맞게 선택해야 한다. [AudioLDM2 모델 카드](https://huggingface.co/cvssp/audioldm2), [AudioLDM 모델 카드](https://huggingface.co/cvssp/audioldm-s-full-v2)가 근거이다.",
+        "basis": "lexical_match",
+        "context": "paragraph"
+      }
+    ],
+    "commands": [],
+    "links": [
+      {
+        "block_id": "b000037",
+        "label": "AudioLDM2 모델 카드",
+        "target": "https://huggingface.co/cvssp/audioldm2",
+        "kind": "external",
+        "line": 46
+      },
+      {
+        "block_id": "b000037",
+        "label": "AudioLDM 모델 카드",
+        "target": "https://huggingface.co/cvssp/audioldm-s-full-v2",
+        "kind": "external",
+        "line": 46
+      }
+    ],
+    "tables": [
+      {
+        "block_id": "b000021",
+        "columns": [
+          "모델",
+          "공급자 리비전",
+          "검증"
+        ],
+        "rows": [
+          [
+            "`cvssp/audioldm2`",
+            "`c8e7e189d324425c05c4c2f81214041ef4107983`",
+            "실제 로딩, 같은 런타임에서 3회 생성, 시드 재현성, 프롬프트에 따른 PCM 차이, 설치된 CLI의 스테레오 출력"
+          ],
+          [
+            "`cvssp/audioldm-s-full-v2`",
+            "`feeb3d14203495a4b6ac0893cbdedb2159b4819c`",
+            "설치된 CLI로 실제 로딩·생성·16kHz WAV 저장"
+          ]
+        ]
+      },
+      {
+        "block_id": "b000029",
+        "columns": [
+          "파일",
+          "형식",
+          "SHA-256"
+        ],
+        "rows": [
+          [
+            "`build/real-audioldm2/rain.wav`",
+            "3초, 44.1kHz, 모노, PCM16",
+            "`6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989`"
+          ],
+          [
+            "`build/real-audioldm2/bells.wav`",
+            "3초, 44.1kHz, 모노, PCM16",
+            "`68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6`"
+          ],
+          [
+            "`build/real-audioldm2/installed-stereo.wav`",
+            "2초, 48kHz, 2채널, PCM16",
+            "`5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f`"
+          ],
+          [
+            "`build/real-audioldm/installed.wav`",
+            "1초, 16kHz, 모노, PCM16",
+            "`2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df`"
+          ],
+          [
+            "`build/real-audioldm2/final.wav`",
+            "최종 설치본, 1초, 16kHz, 모노, PCM16",
+            "`26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f`"
+          ]
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "generator": "workspace-docs",
+    "version": "1.0.0",
+    "profile": "lossless-blocks-v1",
+    "derived": true
+  }
+}

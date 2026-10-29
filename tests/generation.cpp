@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <stdexcept>
 #include <string_view>
 
 namespace {
@@ -136,6 +137,27 @@ void modelTest() {
               backend->modelCalls == 0,
           "Embedded null characters must not reach a model loader");
 
+    for (const auto* forbidden : {"models/audio.onnx", "models/audio.ONNX"}) {
+        const auto result = generator.loadModel(forbidden);
+        check(!result && result.error().code == iiAudioGen::ErrorCode::InvalidModel && backend->modelCalls == 0,
+              "ONNX model files must be rejected before backend execution");
+    }
+    for (const auto* permitted : {"models/audio.gguf", "models/audio.safetensors", "models/audio.safetensor",
+                                  "models/audio.bin", "models/audio.pt", "models/audio.ckpt"}) {
+        const auto before = backend->modelCalls;
+        check(generator.loadModel(permitted).has_value() && backend->modelCalls == before + 1 &&
+                  backend->receivedModel == permitted,
+              "Other model formats must reach the backend unchanged");
+    }
+    const std::filesystem::path fixture{IIAUDIOGEN_TEST_FIXTURES};
+    const auto extensionless = fixture / "audio-model-fixture";
+    check(generator.loadModel(extensionless).has_value() && backend->receivedModel == extensionless,
+          "An extensionless model path must reach the backend");
+    const auto dottedDirectory = fixture / "model.onnx";
+    check(generator.loadModel(dottedDirectory).has_value() && backend->receivedModel == dottedDirectory,
+          "An existing directory named .onnx is not an ONNX model file");
+    backend->modelCalls = 0;
+
     const auto noBackend = iiAudioGen::Generator{nullptr}.loadModel("models/audio");
     check(!noBackend && noBackend.error().code == iiAudioGen::ErrorCode::BackendUnavailable,
           "An unconfigured model slot must report BackendUnavailable");
@@ -150,7 +172,7 @@ void modelTest() {
           "A model directory path must be forwarded once without rewriting");
     const auto checkpointResult = generator.loadModel(checkpoint);
     check(checkpointResult.has_value() && backend->modelCalls == 2 && backend->receivedModel == checkpoint,
-          "A model file path must be forwarded once without format assumptions");
+          "A safetensors model file path must be forwarded once without rewriting");
     const auto generated = generator.generate({"Rain on a window"});
     check(generated.has_value() && backend->calls == 1 && backend->modelDuringGeneration == checkpoint,
           "Loading and generation must use the same retained backend");
