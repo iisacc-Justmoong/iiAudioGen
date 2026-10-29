@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "README.md",
-    "sha256": "35d5973eb9cbd9eb4964515a6ffac16ad937e077bdb3f7b2d795e4717a473a44",
-    "bytes": 8639,
-    "line_count": 142,
+    "sha256": "a74f1537ee219dd1488b9767b1783943fa83e9bcc5097c8fea329b092bc61299",
+    "bytes": 8853,
+    "line_count": 145,
     "encoding": "utf-8",
     "language": "en"
   },
@@ -112,21 +112,21 @@
       "id": "b000013",
       "kind": "paragraph",
       "start_line": 16,
-      "end_line": 16,
-      "raw": "Fixed project assets belong under `resources/`; no model weights are bundled.\n"
+      "end_line": 19,
+      "raw": "Fixed project assets belong under `resources/`; no model weights are bundled.\nThe generator interface is under `src/`, the Diffusers adapter under\n`src/Backends/`, and process management under `src/Process/`. Build and installed\nconsumers retain the existing `<iiAudioGen/...>` header names.\n"
     },
     {
       "id": "b000014",
       "kind": "blank",
-      "start_line": 17,
-      "end_line": 17,
+      "start_line": 20,
+      "end_line": 20,
       "raw": "\n"
     },
     {
       "id": "b000015",
       "kind": "heading",
-      "start_line": 18,
-      "end_line": 18,
+      "start_line": 21,
+      "end_line": 21,
       "raw": "## Requirements and build\n",
       "level": 2,
       "title": "Requirements and build"
@@ -134,29 +134,29 @@
     {
       "id": "b000016",
       "kind": "blank",
-      "start_line": 19,
-      "end_line": 19,
+      "start_line": 22,
+      "end_line": 22,
       "raw": "\n"
     },
     {
       "id": "b000017",
       "kind": "paragraph",
-      "start_line": 20,
-      "end_line": 20,
+      "start_line": 23,
+      "end_line": 23,
       "raw": "The library requires CMake 3.24 or later, C++23 `std::expected`, and native process/thread APIs. It does not discover or link another iiSDK module. Tests additionally require Python 3.10 or later. Actual inference requires a Python environment containing [runtime/requirements.txt](runtime/requirements.txt); Python 3.12 was used for local verification.\n"
     },
     {
       "id": "b000018",
       "kind": "blank",
-      "start_line": 21,
-      "end_line": 21,
+      "start_line": 24,
+      "end_line": 24,
       "raw": "\n"
     },
     {
       "id": "b000019",
       "kind": "fenced_code",
-      "start_line": 22,
-      "end_line": 31,
+      "start_line": 25,
+      "end_line": 34,
       "raw": "```sh\npython3.12 -m venv build/python\nbuild/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/build/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$PWD/build/stage\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n```\n",
       "language": "sh",
       "code": "python3.12 -m venv build/python\nbuild/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/build/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$PWD/build/stage\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n",
@@ -165,57 +165,57 @@
     {
       "id": "b000020",
       "kind": "blank",
-      "start_line": 32,
-      "end_line": 32,
+      "start_line": 35,
+      "end_line": 35,
       "raw": "\n"
     },
     {
       "id": "b000021",
       "kind": "paragraph",
-      "start_line": 33,
-      "end_line": 33,
+      "start_line": 36,
+      "end_line": 36,
       "raw": "All build and verification outputs stay under `build/`. Shared libraries are enabled by default; use `-DBUILD_SHARED_LIBS=OFF` for a static library. Configure `-DBUILD_TESTING=OFF` to build the C++ library without finding Python at build time. The standalone default install prefix is `~/.local/SDK/iiAudioGen` when no prefix is provided.\n"
     },
     {
       "id": "b000022",
       "kind": "blank",
-      "start_line": 34,
-      "end_line": 34,
+      "start_line": 37,
+      "end_line": 37,
       "raw": "\n"
     },
     {
       "id": "b000023",
       "kind": "paragraph",
-      "start_line": 35,
-      "end_line": 35,
+      "start_line": 38,
+      "end_line": 38,
       "raw": "The Python worker source is embedded in the library. Installed consumers need neither the SDK source tree nor a separately located worker script. Python and its ML dependencies remain host-managed runtime dependencies.\n"
     },
     {
       "id": "b000024",
       "kind": "blank",
-      "start_line": 36,
-      "end_line": 36,
+      "start_line": 39,
+      "end_line": 39,
       "raw": "\n"
     },
     {
       "id": "b000025",
       "kind": "paragraph",
-      "start_line": 37,
-      "end_line": 37,
+      "start_line": 40,
+      "end_line": 40,
       "raw": "Use the pinned requirements in a dedicated environment. AudioLDM2's GPT-2 generation path is incompatible with the tested Transformers 5 stack; this runtime pins Transformers 4.48.3 and a compatible Diffusers/Hugging Face Hub combination. Upgrading these packages requires rerunning the real-model acceptance test.\n"
     },
     {
       "id": "b000026",
       "kind": "blank",
-      "start_line": 38,
-      "end_line": 38,
+      "start_line": 41,
+      "end_line": 41,
       "raw": "\n"
     },
     {
       "id": "b000027",
       "kind": "heading",
-      "start_line": 39,
-      "end_line": 39,
+      "start_line": 42,
+      "end_line": 42,
       "raw": "## C++ API\n",
       "level": 2,
       "title": "C++ API"
@@ -223,15 +223,15 @@
     {
       "id": "b000028",
       "kind": "blank",
-      "start_line": 40,
-      "end_line": 40,
+      "start_line": 43,
+      "end_line": 43,
       "raw": "\n"
     },
     {
       "id": "b000029",
       "kind": "fenced_code",
-      "start_line": 41,
-      "end_line": 59,
+      "start_line": 44,
+      "end_line": 62,
       "raw": "```cpp\n#include <iiAudioGen/Diffusers.h>\n\niiAudioGen::DiffusersOptions runtime;\nruntime.pythonExecutable = \"/absolute/path/to/python\";\nruntime.device = \"cpu\";\nruntime.inferenceSteps = 50;\n\niiAudioGen::Generator generator{iiAudioGen::createDiffusersBackend(runtime)};\nauto loaded = generator.loadModel(\"/absolute/path/to/local/audio-model\");\nif (loaded) {\n    iiAudioGen::GenerationRequest request{\n        \"Gentle rain falling on leaves in a quiet forest.\",\n        5.0, 44100, 1, 42\n    };\n    auto audio = generator.generate(request);\n    // Check audio before reading audio->samples, audio->sampleRate and audio->channels.\n}\n```\n",
       "language": "cpp",
       "code": "#include <iiAudioGen/Diffusers.h>\n\niiAudioGen::DiffusersOptions runtime;\nruntime.pythonExecutable = \"/absolute/path/to/python\";\nruntime.device = \"cpu\";\nruntime.inferenceSteps = 50;\n\niiAudioGen::Generator generator{iiAudioGen::createDiffusersBackend(runtime)};\nauto loaded = generator.loadModel(\"/absolute/path/to/local/audio-model\");\nif (loaded) {\n    iiAudioGen::GenerationRequest request{\n        \"Gentle rain falling on leaves in a quiet forest.\",\n        5.0, 44100, 1, 42\n    };\n    auto audio = generator.generate(request);\n    // Check audio before reading audio->samples, audio->sampleRate and audio->channels.\n}\n",
@@ -240,71 +240,71 @@
     {
       "id": "b000030",
       "kind": "blank",
-      "start_line": 60,
-      "end_line": 60,
+      "start_line": 63,
+      "end_line": 63,
       "raw": "\n"
     },
     {
       "id": "b000031",
       "kind": "paragraph",
-      "start_line": 61,
-      "end_line": 61,
+      "start_line": 64,
+      "end_line": 64,
       "raw": "`Generator{}` selects the same concrete backend with `python3`, CPU, 50 steps and a five-minute timeout. Set `DiffusersOptions` explicitly when using a dedicated runtime. `Generator{nullptr}` creates an unconfigured generator. Custom `Backend` implementations remain injectable.\n"
     },
     {
       "id": "b000032",
       "kind": "blank",
-      "start_line": 62,
-      "end_line": 62,
+      "start_line": 65,
+      "end_line": 65,
       "raw": "\n"
     },
     {
       "id": "b000033",
       "kind": "paragraph",
-      "start_line": 63,
-      "end_line": 63,
+      "start_line": 66,
+      "end_line": 66,
       "raw": "`loadModel()` returns `std::expected<void, Error>`. `generate()` returns `std::expected<GenerationResult, Error>`. Generation before loading returns `ModelNotLoaded`. Missing runtime dependencies return `BackendUnavailable`; malformed or unsupported models, loading failures, invalid requests and inference failures have separate errors.\n"
     },
     {
       "id": "b000034",
       "kind": "blank",
-      "start_line": 64,
-      "end_line": 64,
+      "start_line": 67,
+      "end_line": 67,
       "raw": "\n"
     },
     {
       "id": "b000035",
       "kind": "paragraph",
-      "start_line": 65,
-      "end_line": 65,
+      "start_line": 68,
+      "end_line": 68,
       "raw": "The concrete backend supports local Diffusers directories whose `model_index.json` declares `AudioLDMPipeline` or `AudioLDM2Pipeline`, with Safetensors weights and all tokenizer/configuration components present. Standalone checkpoint files, Hub identifiers, custom pipelines and arbitrary architectures are not supported by this backend.\n"
     },
     {
       "id": "b000036",
       "kind": "blank",
-      "start_line": 66,
-      "end_line": 66,
+      "start_line": 69,
+      "end_line": 69,
       "raw": "\n"
     },
     {
       "id": "b000037",
       "kind": "paragraph",
-      "start_line": 67,
-      "end_line": 67,
+      "start_line": 70,
+      "end_line": 70,
       "raw": "Output duration is limited to 60 seconds, sample rates to 8000..192000 Hz and channel counts to one or two. AudioLDM produces mono audio; two-channel output duplicates that generated channel. Resampling changes the output format and does not increase the model's native bandwidth. CPU, MPS and CUDA are selectable; local physical verification used CPU on macOS arm64.\n"
     },
     {
       "id": "b000038",
       "kind": "blank",
-      "start_line": 68,
-      "end_line": 68,
+      "start_line": 71,
+      "end_line": 71,
       "raw": "\n"
     },
     {
       "id": "b000039",
       "kind": "heading",
-      "start_line": 69,
-      "end_line": 69,
+      "start_line": 72,
+      "end_line": 72,
       "raw": "## CLI\n",
       "level": 2,
       "title": "CLI"
@@ -312,29 +312,29 @@
     {
       "id": "b000040",
       "kind": "blank",
-      "start_line": 70,
-      "end_line": 70,
+      "start_line": 73,
+      "end_line": 73,
       "raw": "\n"
     },
     {
       "id": "b000041",
       "kind": "paragraph",
-      "start_line": 71,
-      "end_line": 74,
+      "start_line": 74,
+      "end_line": 77,
       "raw": "`iiaudio-generate` is a separately configured consumer application. It links\niiAudioGen and iiFileProvider independently and publishes 16-bit PCM WAV through\niiFileProvider. Build and install the two SDK packages first, then configure the\ntool; it is no longer installed by the library's CMake project:\n"
     },
     {
       "id": "b000042",
       "kind": "blank",
-      "start_line": 75,
-      "end_line": 75,
+      "start_line": 78,
+      "end_line": 78,
       "raw": "\n"
     },
     {
       "id": "b000043",
       "kind": "fenced_code",
-      "start_line": 76,
-      "end_line": 87,
+      "start_line": 79,
+      "end_line": 90,
       "raw": "```sh\ncmake -S tools -B build/tools \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build build/tools --config Release\nbuild/tools/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/build/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n```\n",
       "language": "sh",
       "code": "cmake -S tools -B build/tools \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build build/tools --config Release\nbuild/tools/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/build/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n",
@@ -343,43 +343,43 @@
     {
       "id": "b000044",
       "kind": "blank",
-      "start_line": 88,
-      "end_line": 88,
+      "start_line": 91,
+      "end_line": 91,
       "raw": "\n"
     },
     {
       "id": "b000045",
       "kind": "paragraph",
-      "start_line": 89,
-      "end_line": 91,
+      "start_line": 92,
+      "end_line": 94,
       "raw": "The tool project also owns the generated-file publication test and optional\nreal-model acceptance test. Installing the library alone does not install the\nCLI; install the separately built tool project when that executable is needed.\n"
     },
     {
       "id": "b000046",
       "kind": "blank",
-      "start_line": 92,
-      "end_line": 92,
+      "start_line": 95,
+      "end_line": 95,
       "raw": "\n"
     },
     {
       "id": "b000047",
       "kind": "paragraph",
-      "start_line": 93,
-      "end_line": 93,
+      "start_line": 96,
+      "end_line": 96,
       "raw": "Prepare the model separately using the provider's normal download procedure. Model weights are not included in this repository or installed package. The reference CVSSP AudioLDM models used for development declare **CC-BY-NC-SA-4.0**; consult their [AudioLDM](https://huggingface.co/cvssp/audioldm-s-full-v2) and [AudioLDM2](https://huggingface.co/cvssp/audioldm2) model cards before selecting a model for commercial work.\n"
     },
     {
       "id": "b000048",
       "kind": "blank",
-      "start_line": 94,
-      "end_line": 94,
+      "start_line": 97,
+      "end_line": 97,
       "raw": "\n"
     },
     {
       "id": "b000049",
       "kind": "heading",
-      "start_line": 95,
-      "end_line": 95,
+      "start_line": 98,
+      "end_line": 98,
       "raw": "## Installed package\n",
       "level": 2,
       "title": "Installed package"
@@ -387,15 +387,15 @@
     {
       "id": "b000050",
       "kind": "blank",
-      "start_line": 96,
-      "end_line": 96,
+      "start_line": 99,
+      "end_line": 99,
       "raw": "\n"
     },
     {
       "id": "b000051",
       "kind": "fenced_code",
-      "start_line": 97,
-      "end_line": 100,
+      "start_line": 100,
+      "end_line": 103,
       "raw": "```cmake\nfind_package(iiAudioGen 0.3 CONFIG REQUIRED)\ntarget_link_libraries(my_app PRIVATE iiAudioGen::iiAudioGen)\n```\n",
       "language": "cmake",
       "code": "find_package(iiAudioGen 0.3 CONFIG REQUIRED)\ntarget_link_libraries(my_app PRIVATE iiAudioGen::iiAudioGen)\n",
@@ -404,15 +404,15 @@
     {
       "id": "b000052",
       "kind": "blank",
-      "start_line": 101,
-      "end_line": 101,
+      "start_line": 104,
+      "end_line": 104,
       "raw": "\n"
     },
     {
       "id": "b000053",
       "kind": "fenced_code",
-      "start_line": 102,
-      "end_line": 107,
+      "start_line": 105,
+      "end_line": 110,
       "raw": "```sh\ncmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n```\n",
       "language": "sh",
       "code": "cmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n",
@@ -421,29 +421,29 @@
     {
       "id": "b000054",
       "kind": "blank",
-      "start_line": 108,
-      "end_line": 108,
+      "start_line": 111,
+      "end_line": 111,
       "raw": "\n"
     },
     {
       "id": "b000055",
       "kind": "paragraph",
-      "start_line": 109,
-      "end_line": 109,
+      "start_line": 112,
+      "end_line": 112,
       "raw": "Version 0.3.0 uses shared-library ABI 0.3. Rebuild consumers against the new package. Public headers are `<iiAudioGen/iiAudioGen.h>` and `<iiAudioGen/Diffusers.h>`.\n"
     },
     {
       "id": "b000056",
       "kind": "blank",
-      "start_line": 110,
-      "end_line": 110,
+      "start_line": 113,
+      "end_line": 113,
       "raw": "\n"
     },
     {
       "id": "b000057",
       "kind": "heading",
-      "start_line": 111,
-      "end_line": 111,
+      "start_line": 114,
+      "end_line": 114,
       "raw": "## Verification\n",
       "level": 2,
       "title": "Verification"
@@ -451,43 +451,43 @@
     {
       "id": "b000058",
       "kind": "blank",
-      "start_line": 112,
-      "end_line": 112,
+      "start_line": 115,
+      "end_line": 115,
       "raw": "\n"
     },
     {
       "id": "b000059",
       "kind": "paragraph",
-      "start_line": 113,
-      "end_line": 113,
+      "start_line": 116,
+      "end_line": 116,
       "raw": "Normal CTest covers request/model contracts, local-only safe loading, failed model replacement, IPC framing, PCM validation, worker crashes, timeouts and recovery. Protocol fixtures do not prove model inference.\n"
     },
     {
       "id": "b000060",
       "kind": "blank",
-      "start_line": 114,
-      "end_line": 114,
+      "start_line": 117,
+      "end_line": 117,
       "raw": "\n"
     },
     {
       "id": "b000061",
       "kind": "paragraph",
-      "start_line": 115,
-      "end_line": 115,
+      "start_line": 118,
+      "end_line": 118,
       "raw": "For an explicit real-model acceptance test, configure:\n"
     },
     {
       "id": "b000062",
       "kind": "blank",
-      "start_line": 116,
-      "end_line": 116,
+      "start_line": 119,
+      "end_line": 119,
       "raw": "\n"
     },
     {
       "id": "b000063",
       "kind": "fenced_code",
-      "start_line": 117,
-      "end_line": 123,
+      "start_line": 120,
+      "end_line": 126,
       "raw": "```sh\ncmake -S . -B build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/build/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/build/python/bin/python\"\ncmake --build build --config Release\nctest --test-dir build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n```\n",
       "language": "sh",
       "code": "cmake -S . -B build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/build/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/build/python/bin/python\"\ncmake --build build --config Release\nctest --test-dir build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n",
@@ -496,29 +496,29 @@
     {
       "id": "b000064",
       "kind": "blank",
-      "start_line": 124,
-      "end_line": 124,
+      "start_line": 127,
+      "end_line": 127,
       "raw": "\n"
     },
     {
       "id": "b000065",
       "kind": "paragraph",
-      "start_line": 125,
-      "end_line": 125,
+      "start_line": 128,
+      "end_line": 128,
       "raw": "That test loads real weights, generates three clips in one retained runtime, checks seed repeatability and prompt-dependent output, and writes `build/real-inference/rain.wav` and `bells.wav`. It does not grade perceptual audio quality. See [docs/Architecture.md](docs/Architecture.md) and [docs/Verification.md](docs/Verification.md) for implementation boundaries and recorded results.\n"
     },
     {
       "id": "b000066",
       "kind": "blank",
-      "start_line": 126,
-      "end_line": 126,
+      "start_line": 129,
+      "end_line": 129,
       "raw": "\n"
     },
     {
       "id": "b000067",
       "kind": "heading",
-      "start_line": 127,
-      "end_line": 127,
+      "start_line": 130,
+      "end_line": 130,
       "raw": "## License\n",
       "level": 2,
       "title": "License"
@@ -526,50 +526,50 @@
     {
       "id": "b000068",
       "kind": "blank",
-      "start_line": 128,
-      "end_line": 128,
+      "start_line": 131,
+      "end_line": 131,
       "raw": "\n"
     },
     {
       "id": "b000069",
       "kind": "paragraph",
-      "start_line": 129,
-      "end_line": 129,
+      "start_line": 132,
+      "end_line": 132,
       "raw": "SPDX-License-Identifier: MIT\n"
     },
     {
       "id": "b000070",
       "kind": "blank",
-      "start_line": 130,
-      "end_line": 130,
+      "start_line": 133,
+      "end_line": 133,
       "raw": "\n"
     },
     {
       "id": "b000071",
       "kind": "paragraph",
-      "start_line": 131,
-      "end_line": 133,
+      "start_line": 134,
+      "end_line": 136,
       "raw": "The original code and documentation in this repository are licensed under the\n[MIT License](LICENSE). Third-party code, libraries, fonts, tools, and model\nweights retain their respective licenses.\n"
     },
     {
       "id": "b000072",
       "kind": "blank",
-      "start_line": 134,
-      "end_line": 134,
+      "start_line": 137,
+      "end_line": 137,
       "raw": "\n"
     },
     {
       "id": "b000073",
       "kind": "html",
-      "start_line": 135,
-      "end_line": 135,
+      "start_line": 138,
+      "end_line": 138,
       "raw": "<!-- workspace-docs:readme:start -->\n"
     },
     {
       "id": "b000074",
       "kind": "heading",
-      "start_line": 136,
-      "end_line": 136,
+      "start_line": 139,
+      "end_line": 139,
       "raw": "## Documentation entry points\n",
       "level": 2,
       "title": "Documentation entry points"
@@ -577,15 +577,15 @@
     {
       "id": "b000075",
       "kind": "blank",
-      "start_line": 137,
-      "end_line": 137,
+      "start_line": 140,
+      "end_line": 140,
       "raw": "\n"
     },
     {
       "id": "b000076",
       "kind": "list",
-      "start_line": 138,
-      "end_line": 141,
+      "start_line": 141,
+      "end_line": 144,
       "raw": "- Human overview: this English `README.md`.\n- Agent instructions: [AGENT.md](AGENT.md).\n- Human documentation: [documentation index](docs/README.md).\n- Structured agent documentation: [agent index](docs/agent-index.json).\n",
       "items": [
         {
@@ -613,8 +613,8 @@
     {
       "id": "b000077",
       "kind": "html",
-      "start_line": 142,
-      "end_line": 142,
+      "start_line": 145,
+      "end_line": 145,
       "raw": "<!-- workspace-docs:readme:end -->\n"
     }
   ],
@@ -633,7 +633,7 @@
       "level": 2,
       "title": "Requirements and build",
       "anchor": "requirements-and-build",
-      "start_line": 18
+      "start_line": 21
     },
     {
       "block_id": "b000027",
@@ -641,7 +641,7 @@
       "level": 2,
       "title": "C++ API",
       "anchor": "c-api",
-      "start_line": 39
+      "start_line": 42
     },
     {
       "block_id": "b000039",
@@ -649,7 +649,7 @@
       "level": 2,
       "title": "CLI",
       "anchor": "cli",
-      "start_line": 69
+      "start_line": 72
     },
     {
       "block_id": "b000049",
@@ -657,7 +657,7 @@
       "level": 2,
       "title": "Installed package",
       "anchor": "installed-package",
-      "start_line": 95
+      "start_line": 98
     },
     {
       "block_id": "b000057",
@@ -665,7 +665,7 @@
       "level": 2,
       "title": "Verification",
       "anchor": "verification",
-      "start_line": 111
+      "start_line": 114
     },
     {
       "block_id": "b000067",
@@ -673,7 +673,7 @@
       "level": 2,
       "title": "License",
       "anchor": "license",
-      "start_line": 127
+      "start_line": 130
     },
     {
       "block_id": "b000074",
@@ -681,7 +681,7 @@
       "level": 2,
       "title": "Documentation entry points",
       "anchor": "documentation-entry-points",
-      "start_line": 136
+      "start_line": 139
     }
   ],
   "indexes": {
@@ -695,7 +695,7 @@
       },
       {
         "block_id": "b000059",
-        "line": 113,
+        "line": 116,
         "text": "Normal CTest covers request/model contracts, local-only safe loading, failed model replacement, IPC framing, PCM validation, worker crashes, timeouts and recovery. Protocol fixtures do not prove model inference.",
         "basis": "lexical_match",
         "context": "paragraph"
@@ -736,63 +736,63 @@
         "label": "runtime/requirements.txt",
         "target": "runtime/requirements.txt",
         "kind": "relative",
-        "line": 20
+        "line": 23
       },
       {
         "block_id": "b000047",
         "label": "AudioLDM",
         "target": "https://huggingface.co/cvssp/audioldm-s-full-v2",
         "kind": "external",
-        "line": 93
+        "line": 96
       },
       {
         "block_id": "b000047",
         "label": "AudioLDM2",
         "target": "https://huggingface.co/cvssp/audioldm2",
         "kind": "external",
-        "line": 93
+        "line": 96
       },
       {
         "block_id": "b000065",
         "label": "docs/Architecture.md",
         "target": "docs/Architecture.md",
         "kind": "relative",
-        "line": 125
+        "line": 128
       },
       {
         "block_id": "b000065",
         "label": "docs/Verification.md",
         "target": "docs/Verification.md",
         "kind": "relative",
-        "line": 125
+        "line": 128
       },
       {
         "block_id": "b000071",
         "label": "MIT License",
         "target": "LICENSE",
         "kind": "relative",
-        "line": 132
+        "line": 135
       },
       {
         "block_id": "b000076",
         "label": "AGENT.md",
         "target": "AGENT.md",
         "kind": "relative",
-        "line": 139
+        "line": 142
       },
       {
         "block_id": "b000076",
         "label": "documentation index",
         "target": "docs/README.md",
         "kind": "relative",
-        "line": 140
+        "line": 143
       },
       {
         "block_id": "b000076",
         "label": "agent index",
         "target": "docs/agent-index.json",
         "kind": "relative",
-        "line": 141
+        "line": 144
       }
     ],
     "tables": []

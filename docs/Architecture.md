@@ -1,5 +1,9 @@
 # iiAudioGen 실제 생성 구조
 
+생성 API와 구현은 `src/`, Diffusers 백엔드는 `src/Backends/`, 워커 프로세스
+관리는 `src/Process/`에 둔다. 헤더와 구현은 함께 배치한다. CMake는 빌드용
+전달 헤더를 생성하고 실제 공개 헤더를 기존 `iiAudioGen/` 설치 경로에 제공한다.
+
 `iiAudioGen` 0.3.0은 로컬 AudioLDM·AudioLDM2 모델과 프롬프트를 이용해 오디오를 생성하는 C++23 SDK이다. 공개 API와 프로세스 제어는 C++로 구현하며, 모델 연산은 공식 Diffusers·PyTorch 런타임에서 수행한다. Qt는 사용하지 않는다.
 
 생성 라이브러리는 다른 SDK를 링크하지 않으며 float PCM을 호출자에게 반환한다.

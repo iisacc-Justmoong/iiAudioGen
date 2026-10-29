@@ -14,6 +14,9 @@ A local model directory is loaded once with `loadModel()`. `generate()` passes t
 `Generator::loadModel()` rejects `.onnx` model files, regardless of extension case, before invoking a backend. GGUF, safetensors and other paths are forwarded to the selected backend, which must validate actual format and architecture support. The default Diffusers backend accepts local model directories and loads weights with `use_safetensors=True`; forwarding a GGUF path does not mean that this backend implements GGUF inference.
 
 Fixed project assets belong under `resources/`; no model weights are bundled.
+The generator interface is under `src/`, the Diffusers adapter under
+`src/Backends/`, and process management under `src/Process/`. Build and installed
+consumers retain the existing `<iiAudioGen/...>` header names.
 
 ## Requirements and build
 

@@ -1,0 +1,12 @@
+if(NOT DEFINED SOURCE_ROOT)
+    message(FATAL_ERROR "SOURCE_ROOT is required")
+endif()
+if(EXISTS "${SOURCE_ROOT}/src/iiAudioGen")
+    message(FATAL_ERROR "The source tree must not repeat the project name")
+endif()
+foreach(_file iiAudioGen.h iiAudioGen.cpp Backends/Diffusers.h Backends/Diffusers.cpp
+              Process/ChildProcess.h Process/ChildProcess.cpp Process/WorkerSource.h.in)
+    if(NOT EXISTS "${SOURCE_ROOT}/src/${_file}")
+        message(FATAL_ERROR "Missing source in its responsibility directory: ${_file}")
+    endif()
+endforeach()

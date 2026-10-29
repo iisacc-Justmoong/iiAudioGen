@@ -24,11 +24,16 @@ option(BUILD_SHARED_LIBS "Build iiAudioGen as a shared library" ON)
 find_package(Threads REQUIRED)
 
 file(READ runtime/diffusers_worker.py _worker_source)
-configure_file(src/iiAudioGen/WorkerSource.h.in include/iiAudioGen/WorkerSource.h @ONLY)
+configure_file(src/Process/WorkerSource.h.in include/iiAudioGen/WorkerSource.h @ONLY)
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS runtime/diffusers_worker.py)
-add_library(iiAudioGen src/iiAudioGen/iiAudioGen.cpp src/iiAudioGen/Diffusers.cpp src/iiAudioGen/ChildProcess.cpp)
+file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/include/iiAudioGen/iiAudioGen.h"
+    CONTENT "#pragma once\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/src/iiAudioGen.h\"\n")
+file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/include/iiAudioGen/Diffusers.h"
+    CONTENT "#pragma once\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/src/Backends/Diffusers.h\"\n")
+add_library(iiAudioGen src/iiAudioGen.cpp src/Backends/Diffusers.cpp src/Process/ChildProcess.cpp)
 target_link_libraries(iiAudioGen PRIVATE Threads::Threads)
-target_include_directories(iiAudioGen PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include/iiAudioGen")
+target_include_directories(iiAudioGen PRIVATE
+    "${CMAKE_CURRENT_BINARY_DIR}/include/iiAudioGen" "${CMAKE_CURRENT_SOURCE_DIR}/src/Process")
 add_library(iiAudioGen::iiAudioGen ALIAS iiAudioGen)
 generate_export_header(iiAudioGen
     BASE_NAME IIAUDIOGEN
@@ -53,7 +58,7 @@ install(TARGETS iiAudioGen EXPORT iiAudioGenTargets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES src/iiAudioGen/iiAudioGen.h src/iiAudioGen/Diffusers.h
+install(FILES src/iiAudioGen.h src/Backends/Diffusers.h
     "${CMAKE_CURRENT_BINARY_DIR}/include/iiAudioGen/Export.h"
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/iiAudioGen)
 install(EXPORT iiAudioGenTargets NAMESPACE iiAudioGen:: DESTINATION "${_package_dir}")
@@ -70,6 +75,8 @@ install(DIRECTORY docs/ DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen/docs)
 install(FILES runtime/requirements.txt DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen/runtime)
 
 if(BUILD_TESTING)
+    add_test(NAME iiAudioGen.source_layout COMMAND ${CMAKE_COMMAND}
+        "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/source_layout.cmake")
     add_test(NAME iiAudioGen.sdk_boundary COMMAND ${CMAKE_COMMAND}
         "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/sdk_boundary.cmake")
     find_package(Python3 3.10 COMPONENTS Interpreter REQUIRED)

@@ -21,14 +21,14 @@
       "document_id": "urn:iisacc:document:aa956877090463ecabe4f0a113dd2deda4855825d654230e1ac2fe504b45d8ca",
       "source": "README.md",
       "agent_json": "docs/entrypoints/README.agent.json",
-      "source_sha256": "35d5973eb9cbd9eb4964515a6ffac16ad937e077bdb3f7b2d795e4717a473a44",
+      "source_sha256": "a74f1537ee219dd1488b9767b1783943fa83e9bcc5097c8fea329b092bc61299",
       "role": "overview"
     },
     {
       "document_id": "urn:iisacc:document:cff8e0711157595e4fa0a6dcb2f89c9beec777dc425e9d28363c6880761a8441",
       "source": "docs/Architecture.md",
       "agent_json": "docs/Architecture.agent.json",
-      "source_sha256": "d7df532701f14e02ce827d711177df75b193f4c2c50291f68e6a8d09e97e5b6f",
+      "source_sha256": "62b5e7e9a2ba32221081931b428ff694d05e3b641c42401d36da92fa66002d1a",
       "role": "reference"
     },
     {
