@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "docs/Verification.md",
-    "sha256": "029acd7fac52532c1bcc6ebec88ff7b302448039acfb4c5361100f1dc77900ba",
-    "bytes": 5731,
-    "line_count": 48,
+    "sha256": "7188fb2dd043f85ddf25b433518c2c48d7aa20427b58f579bb8daba0c0b33528",
+    "bytes": 6196,
+    "line_count": 50,
     "encoding": "utf-8",
     "language": "ko"
   },
@@ -206,7 +206,7 @@
       "kind": "paragraph",
       "start_line": 26,
       "end_line": 26,
-      "raw": "각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치와 생성 결과는 `build/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.\n"
+      "raw": "각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치는 `resources/models/`, 보존된 생성 결과는 `resources/.recovery/audio-output-20261030/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.\n"
     },
     {
       "id": "b000024",
@@ -250,7 +250,7 @@
       "kind": "table",
       "start_line": 32,
       "end_line": 38,
-      "raw": "| 파일 | 형식 | SHA-256 |\n| --- | --- | --- |\n| `build/real-audioldm2/rain.wav` | 3초, 44.1kHz, 모노, PCM16 | `6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989` |\n| `build/real-audioldm2/bells.wav` | 3초, 44.1kHz, 모노, PCM16 | `68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6` |\n| `build/real-audioldm2/installed-stereo.wav` | 2초, 48kHz, 2채널, PCM16 | `5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f` |\n| `build/real-audioldm/installed.wav` | 1초, 16kHz, 모노, PCM16 | `2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df` |\n| `build/real-audioldm2/final.wav` | 최종 설치본, 1초, 16kHz, 모노, PCM16 | `26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f` |\n",
+      "raw": "| 파일 | 형식 | SHA-256 |\n| --- | --- | --- |\n| `resources/.recovery/audio-output-20261030/real-audioldm2/rain.wav` | 3초, 44.1kHz, 모노, PCM16 | `6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989` |\n| `resources/.recovery/audio-output-20261030/real-audioldm2/bells.wav` | 3초, 44.1kHz, 모노, PCM16 | `68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6` |\n| `resources/.recovery/audio-output-20261030/real-audioldm2/installed-stereo.wav` | 2초, 48kHz, 2채널, PCM16 | `5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f` |\n| `resources/.recovery/audio-output-20261030/real-audioldm/installed.wav` | 1초, 16kHz, 모노, PCM16 | `2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df` |\n| `resources/.recovery/audio-output-20261030/real-audioldm2/final.wav` | 최종 설치본, 1초, 16kHz, 모노, PCM16 | `26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f` |\n",
       "columns": [
         "파일",
         "형식",
@@ -258,27 +258,27 @@
       ],
       "rows": [
         [
-          "`build/real-audioldm2/rain.wav`",
+          "`resources/.recovery/audio-output-20261030/real-audioldm2/rain.wav`",
           "3초, 44.1kHz, 모노, PCM16",
           "`6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989`"
         ],
         [
-          "`build/real-audioldm2/bells.wav`",
+          "`resources/.recovery/audio-output-20261030/real-audioldm2/bells.wav`",
           "3초, 44.1kHz, 모노, PCM16",
           "`68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6`"
         ],
         [
-          "`build/real-audioldm2/installed-stereo.wav`",
+          "`resources/.recovery/audio-output-20261030/real-audioldm2/installed-stereo.wav`",
           "2초, 48kHz, 2채널, PCM16",
           "`5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f`"
         ],
         [
-          "`build/real-audioldm/installed.wav`",
+          "`resources/.recovery/audio-output-20261030/real-audioldm/installed.wav`",
           "1초, 16kHz, 모노, PCM16",
           "`2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df`"
         ],
         [
-          "`build/real-audioldm2/final.wav`",
+          "`resources/.recovery/audio-output-20261030/real-audioldm2/final.wav`",
           "최종 설치본, 1초, 16kHz, 모노, PCM16",
           "`26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f`"
         ]
@@ -355,6 +355,20 @@
       "start_line": 48,
       "end_line": 48,
       "raw": "검증한 범위는 실제 프롬프트 조건화, 가중치 로딩, 파형 생성, 형식 변환, 설치된 C++ SDK 경로와 결과 파일이다. 주관적인 음질, 프롬프트 의미 일치도, 다른 체크포인트, Windows·Linux 실행, MPS·CUDA와 Neural Engine 실행은 검증하지 않았다.\n"
+    },
+    {
+      "id": "b000040",
+      "kind": "blank",
+      "start_line": 49,
+      "end_line": 49,
+      "raw": "\n"
+    },
+    {
+      "id": "b000041",
+      "kind": "paragraph",
+      "start_line": 50,
+      "end_line": 50,
+      "raw": "테스트용 프로토콜 동료와 모델 경로는 `resources/test-fixtures/`에 있으며 임시 데이터는 테스트 종료 시 정리한다. 독립 실행 환경은 `resources/runtime/python/`에 보관한다.\n"
     }
   ],
   "outline": [
@@ -433,7 +447,7 @@
       {
         "block_id": "b000023",
         "line": 26,
-        "text": "각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치와 생성 결과는 `build/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.",
+        "text": "각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치는 `resources/models/`, 보존된 생성 결과는 `resources/.recovery/audio-output-20261030/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.",
         "basis": "lexical_match",
         "context": "paragraph"
       },
@@ -492,27 +506,27 @@
         ],
         "rows": [
           [
-            "`build/real-audioldm2/rain.wav`",
+            "`resources/.recovery/audio-output-20261030/real-audioldm2/rain.wav`",
             "3초, 44.1kHz, 모노, PCM16",
             "`6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989`"
           ],
           [
-            "`build/real-audioldm2/bells.wav`",
+            "`resources/.recovery/audio-output-20261030/real-audioldm2/bells.wav`",
             "3초, 44.1kHz, 모노, PCM16",
             "`68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6`"
           ],
           [
-            "`build/real-audioldm2/installed-stereo.wav`",
+            "`resources/.recovery/audio-output-20261030/real-audioldm2/installed-stereo.wav`",
             "2초, 48kHz, 2채널, PCM16",
             "`5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f`"
           ],
           [
-            "`build/real-audioldm/installed.wav`",
+            "`resources/.recovery/audio-output-20261030/real-audioldm/installed.wav`",
             "1초, 16kHz, 모노, PCM16",
             "`2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df`"
           ],
           [
-            "`build/real-audioldm2/final.wav`",
+            "`resources/.recovery/audio-output-20261030/real-audioldm2/final.wav`",
             "최종 설치본, 1초, 16kHz, 모노, PCM16",
             "`26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f`"
           ]

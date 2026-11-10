@@ -23,7 +23,7 @@ On macOS arm64, the `build/safetensors-policy/` C++ build and all eight CTest ca
 | `cvssp/audioldm2` | `c8e7e189d324425c05c4c2f81214041ef4107983` | 실제 로딩, 같은 런타임에서 3회 생성, 시드 재현성, 프롬프트에 따른 PCM 차이, 설치된 CLI의 스테레오 출력 |
 | `cvssp/audioldm-s-full-v2` | `feeb3d14203495a4b6ac0893cbdedb2159b4819c` | 설치된 CLI로 실제 로딩·생성·16kHz WAV 저장 |
 
-각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치와 생성 결과는 `build/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.
+각 모델 디렉터리의 다운로드 메타데이터는 모델별로 동일한 리비전이었다. AudioLDM2는 26개 파일, AudioLDM 소형 모델은 15개 파일이다. 가중치는 `resources/models/`, 보존된 생성 결과는 `resources/.recovery/audio-output-20261030/` 아래에 있으며 Git 저장소와 SDK 설치 패키지에 포함하지 않는다.
 
 AudioLDM2 수락 테스트는 CPU, 20단계, 3초, 44.1kHz 모노, 시드 42로 진행했다. 첫 프롬프트는 `Gentle rain falling on leaves in a quiet forest.`이며 이를 두 번 실행했다. 세 번째 프롬프트는 `A church bell ringing repeatedly in the distance.`이다. 동일 프롬프트·동일 시드의 전체 float PCM이 정확히 일치했고, 다른 프롬프트의 PCM은 달랐다. 출력은 각각 132,300프레임이었다. 세 번의 생성 시간은 약 44.37초이며 모델 로딩 시간은 이 측정에 포함하지 않았다.
 
@@ -31,11 +31,11 @@ AudioLDM2 수락 테스트는 CPU, 20단계, 3초, 44.1kHz 모노, 시드 42로 
 
 | 파일 | 형식 | SHA-256 |
 | --- | --- | --- |
-| `build/real-audioldm2/rain.wav` | 3초, 44.1kHz, 모노, PCM16 | `6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989` |
-| `build/real-audioldm2/bells.wav` | 3초, 44.1kHz, 모노, PCM16 | `68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6` |
-| `build/real-audioldm2/installed-stereo.wav` | 2초, 48kHz, 2채널, PCM16 | `5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f` |
-| `build/real-audioldm/installed.wav` | 1초, 16kHz, 모노, PCM16 | `2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df` |
-| `build/real-audioldm2/final.wav` | 최종 설치본, 1초, 16kHz, 모노, PCM16 | `26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f` |
+| `resources/.recovery/audio-output-20261030/real-audioldm2/rain.wav` | 3초, 44.1kHz, 모노, PCM16 | `6ce78584eee4ae193b3dc368ed79e017e32a541a127299366de14a882dd69989` |
+| `resources/.recovery/audio-output-20261030/real-audioldm2/bells.wav` | 3초, 44.1kHz, 모노, PCM16 | `68da91bc8158781ef73381d86c959b9edc7aad4e9753d5f7e7d0b5752076d3c6` |
+| `resources/.recovery/audio-output-20261030/real-audioldm2/installed-stereo.wav` | 2초, 48kHz, 2채널, PCM16 | `5e316f55988b1c98c21f37dc94411a82f32404cd803eb353262e5cade760014f` |
+| `resources/.recovery/audio-output-20261030/real-audioldm/installed.wav` | 1초, 16kHz, 모노, PCM16 | `2788d6fa6782015172a190f75941ebabda77c80d4351fea75c67821cdea566df` |
+| `resources/.recovery/audio-output-20261030/real-audioldm2/final.wav` | 최종 설치본, 1초, 16kHz, 모노, PCM16 | `26c2c27b0b99e7cca61320e9813e1e0609238fa05a6d9d50aef89e847b1d324f` |
 
 WAV 헤더와 프레임 수는 Python 표준 `wave`로 독립적으로 읽어 검증했다. C++ 백엔드는 양수 프레임 수, 요청 형식 일치와 모든 float PCM 샘플의 유한성을 확인한다. AudioLDM2 빗소리 WAV의 RMS는 약 0.015694, 종소리 WAV의 RMS는 약 0.137071이었다. 모노 생성 모델의 2채널 출력은 양쪽 채널을 복제하는 형식 변환이며 공간 스테레오 생성 증거가 아니다.
 
@@ -46,3 +46,5 @@ WAV 헤더와 프레임 수는 Python 표준 `wave`로 독립적으로 읽어 �
 검증 모델의 모델 카드에는 CC-BY-NC-SA-4.0이 선언되어 있다. 이는 개발용 참고 모델이며 상용 작업에 사용할 모델은 해당 공급자의 조건에 맞게 선택해야 한다. [AudioLDM2 모델 카드](https://huggingface.co/cvssp/audioldm2), [AudioLDM 모델 카드](https://huggingface.co/cvssp/audioldm-s-full-v2)가 근거이다.
 
 검증한 범위는 실제 프롬프트 조건화, 가중치 로딩, 파형 생성, 형식 변환, 설치된 C++ SDK 경로와 결과 파일이다. 주관적인 음질, 프롬프트 의미 일치도, 다른 체크포인트, Windows·Linux 실행, MPS·CUDA와 Neural Engine 실행은 검증하지 않았다.
+
+테스트용 프로토콜 동료와 모델 경로는 `resources/test-fixtures/`에 있으며 임시 데이터는 테스트 종료 시 정리한다. 독립 실행 환경은 `resources/runtime/python/`에 보관한다.

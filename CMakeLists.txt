@@ -80,24 +80,21 @@ if(BUILD_TESTING)
     add_test(NAME iiAudioGen.sdk_boundary COMMAND ${CMAKE_COMMAND}
         "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/sdk_boundary.cmake")
     find_package(Python3 3.10 COMPONENTS Interpreter REQUIRED)
-    file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fixtures")
+    set(_fixture_root "${CMAKE_CURRENT_SOURCE_DIR}/resources/test-fixtures")
+    add_test(NAME iiAudioGen.resource_layout COMMAND ${CMAKE_COMMAND}
+        "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/resource_layout.cmake")
     add_test(NAME iiAudioGen.worker COMMAND "${Python3_EXECUTABLE}" -B
         "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_worker.py"
-        "${CMAKE_CURRENT_SOURCE_DIR}/runtime/diffusers_worker.py"
-        "${CMAKE_CURRENT_BINARY_DIR}/fixtures")
+        "${CMAKE_CURRENT_SOURCE_DIR}/runtime/diffusers_worker.py" "${_fixture_root}")
     set_tests_properties(iiAudioGen.worker PROPERTIES TIMEOUT 30)
     if(UNIX)
-        foreach(_fixture ok error badpcm badlength crash timeout)
-            file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fixtures/${_fixture}")
-        endforeach()
-        configure_file(tests/runtime_peer.py.in "fixtures/python fixture" @ONLY)
-        file(CHMOD "${CMAKE_CURRENT_BINARY_DIR}/fixtures/python fixture"
-            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+        get_filename_component(_test_python_dir "${Python3_EXECUTABLE}" DIRECTORY)
         add_executable(iiAudioGenDiffusersTests tests/diffusers.cpp)
         target_link_libraries(iiAudioGenDiffusersTests PRIVATE iiAudioGen::iiAudioGen)
         add_test(NAME iiAudioGen.diffusers COMMAND iiAudioGenDiffusersTests
-            "${CMAKE_CURRENT_BINARY_DIR}/fixtures/python fixture" "${CMAKE_CURRENT_BINARY_DIR}/fixtures")
-        set_tests_properties(iiAudioGen.diffusers PROPERTIES TIMEOUT 30)
+            "${_fixture_root}/python fixture" "${_fixture_root}")
+        set_tests_properties(iiAudioGen.diffusers PROPERTIES TIMEOUT 30
+            ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${_test_python_dir}")
     endif()
     add_executable(iiAudioGenTests tests/generation.cpp)
     target_link_libraries(iiAudioGenTests PRIVATE iiAudioGen::iiAudioGen)

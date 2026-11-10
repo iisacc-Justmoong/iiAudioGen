@@ -1,4 +1,4 @@
-#!@Python3_EXECUTABLE@
+#!/usr/bin/env python3
 """Protocol fixture only; this does not perform model inference."""
 import math
 import os

@@ -21,7 +21,7 @@
       "document_id": "urn:iisacc:document:aa956877090463ecabe4f0a113dd2deda4855825d654230e1ac2fe504b45d8ca",
       "source": "README.md",
       "agent_json": "docs/entrypoints/README.agent.json",
-      "source_sha256": "a74f1537ee219dd1488b9767b1783943fa83e9bcc5097c8fea329b092bc61299",
+      "source_sha256": "dcb14f39c20fc2562bcb711f77cb78567ea41444cd89eecf96de148c3f0192df",
       "role": "overview"
     },
     {
@@ -49,7 +49,7 @@
       "document_id": "urn:iisacc:document:582b55e745e67b22f8734f452b6c78d546db76b787b99e1f86cfb27ba85fc35e",
       "source": "docs/Verification.md",
       "agent_json": "docs/Verification.agent.json",
-      "source_sha256": "029acd7fac52532c1bcc6ebec88ff7b302448039acfb4c5361100f1dc77900ba",
+      "source_sha256": "7188fb2dd043f85ddf25b433518c2c48d7aa20427b58f579bb8daba0c0b33528",
       "role": "evidence"
     },
     {

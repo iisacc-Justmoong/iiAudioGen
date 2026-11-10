@@ -10,8 +10,8 @@
   },
   "source": {
     "path": "README.md",
-    "sha256": "a74f1537ee219dd1488b9767b1783943fa83e9bcc5097c8fea329b092bc61299",
-    "bytes": 8853,
+    "sha256": "dcb14f39c20fc2562bcb711f77cb78567ea41444cd89eecf96de148c3f0192df",
+    "bytes": 8971,
     "line_count": 145,
     "encoding": "utf-8",
     "language": "en"
@@ -157,9 +157,9 @@
       "kind": "fenced_code",
       "start_line": 25,
       "end_line": 34,
-      "raw": "```sh\npython3.12 -m venv build/python\nbuild/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/build/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$PWD/build/stage\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n```\n",
+      "raw": "```sh\npython3.12 -m venv resources/runtime/python\nresources/runtime/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/resources/runtime/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$HOME/.local/SDK/iiAudioGen\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n```\n",
       "language": "sh",
-      "code": "python3.12 -m venv build/python\nbuild/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/build/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$PWD/build/stage\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n",
+      "code": "python3.12 -m venv resources/runtime/python\nresources/runtime/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/resources/runtime/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$HOME/.local/SDK/iiAudioGen\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n",
       "closed": true
     },
     {
@@ -335,9 +335,9 @@
       "kind": "fenced_code",
       "start_line": 79,
       "end_line": 90,
-      "raw": "```sh\ncmake -S tools -B build/tools \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build build/tools --config Release\nbuild/tools/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/build/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n```\n",
+      "raw": "```sh\ncmake -S tools -B tools/build \\\n  -DiiAudioGen_DIR=\"$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build tools/build --config Release\ntools/build/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/resources/runtime/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n```\n",
       "language": "sh",
-      "code": "cmake -S tools -B build/tools \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build build/tools --config Release\nbuild/tools/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/build/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n",
+      "code": "cmake -S tools -B tools/build \\\n  -DiiAudioGen_DIR=\"$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build tools/build --config Release\ntools/build/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/resources/runtime/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n",
       "closed": true
     },
     {
@@ -413,9 +413,9 @@
       "kind": "fenced_code",
       "start_line": 105,
       "end_line": 110,
-      "raw": "```sh\ncmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n```\n",
+      "raw": "```sh\ncmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n```\n",
       "language": "sh",
-      "code": "cmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n",
+      "code": "cmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n",
       "closed": true
     },
     {
@@ -488,9 +488,9 @@
       "kind": "fenced_code",
       "start_line": 120,
       "end_line": 126,
-      "raw": "```sh\ncmake -S . -B build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/build/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/build/python/bin/python\"\ncmake --build build --config Release\nctest --test-dir build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n```\n",
+      "raw": "```sh\ncmake -S tools -B tools/build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/resources/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/resources/runtime/python/bin/python\"\ncmake --build tools/build --config Release\nctest --test-dir tools/build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n```\n",
       "language": "sh",
-      "code": "cmake -S . -B build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/build/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/build/python/bin/python\"\ncmake --build build --config Release\nctest --test-dir build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n",
+      "code": "cmake -S tools -B tools/build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/resources/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/resources/runtime/python/bin/python\"\ncmake --build tools/build --config Release\nctest --test-dir tools/build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n",
       "closed": true
     },
     {
@@ -505,7 +505,7 @@
       "kind": "paragraph",
       "start_line": 128,
       "end_line": 128,
-      "raw": "That test loads real weights, generates three clips in one retained runtime, checks seed repeatability and prompt-dependent output, and writes `build/real-inference/rain.wav` and `bells.wav`. It does not grade perceptual audio quality. See [docs/Architecture.md](docs/Architecture.md) and [docs/Verification.md](docs/Verification.md) for implementation boundaries and recorded results.\n"
+      "raw": "That test loads real weights, generates three clips in one retained runtime, checks seed repeatability and prompt-dependent output, and writes `resources/rain.wav` and `resources/bells.wav`. It does not grade perceptual audio quality. See [docs/Architecture.md](docs/Architecture.md) and [docs/Verification.md](docs/Verification.md) for implementation boundaries and recorded results.\n"
     },
     {
       "id": "b000066",
@@ -705,22 +705,22 @@
       {
         "block_id": "b000019",
         "language": "sh",
-        "code": "python3.12 -m venv build/python\nbuild/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/build/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$PWD/build/stage\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n"
+        "code": "python3.12 -m venv resources/runtime/python\nresources/runtime/python/bin/python -m pip install -r runtime/requirements.txt\ncmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \\\n  -DPython3_EXECUTABLE=\"$PWD/resources/runtime/python/bin/python\" \\\n  -DCMAKE_INSTALL_PREFIX=\"$HOME/.local/SDK/iiAudioGen\"\ncmake --build build --config Release\nctest --test-dir build -C Release --output-on-failure\ncmake --install build --config Release\n"
       },
       {
         "block_id": "b000043",
         "language": "sh",
-        "code": "cmake -S tools -B build/tools \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build build/tools --config Release\nbuild/tools/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/build/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n"
+        "code": "cmake -S tools -B tools/build \\\n  -DiiAudioGen_DIR=\"$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen\" \\\n  -DiiFileProviderNative_DIR=\"$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative\"\ncmake --build tools/build --config Release\ntools/build/iiaudio-generate \\\n  --model \"$PWD/resources/models/audioldm2\" \\\n  --python \"$PWD/resources/runtime/python/bin/python\" \\\n  --prompt \"Gentle rain falling on leaves in a quiet forest.\" \\\n  --output \"$PWD/resources/rain.wav\" \\\n  --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42\n"
       },
       {
         "block_id": "b000053",
         "language": "sh",
-        "code": "cmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$PWD/build/stage/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n"
+        "code": "cmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \\\n  -DiiAudioGen_DIR=\"$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen\"\ncmake --build build/consumer/build --config Release\nctest --test-dir build/consumer/build -C Release --output-on-failure\n"
       },
       {
         "block_id": "b000063",
         "language": "sh",
-        "code": "cmake -S . -B build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/build/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/build/python/bin/python\"\ncmake --build build --config Release\nctest --test-dir build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n"
+        "code": "cmake -S tools -B tools/build \\\n  -DIIAUDIOGEN_TEST_MODEL=\"$PWD/resources/models/audioldm2\" \\\n  -DIIAUDIOGEN_TEST_PYTHON=\"$PWD/resources/runtime/python/bin/python\"\ncmake --build tools/build --config Release\nctest --test-dir tools/build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure\n"
       }
     ],
     "links": [

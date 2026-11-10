@@ -23,11 +23,11 @@ consumers retain the existing `<iiAudioGen/...>` header names.
 The library requires CMake 3.24 or later, C++23 `std::expected`, and native process/thread APIs. It does not discover or link another iiSDK module. Tests additionally require Python 3.10 or later. Actual inference requires a Python environment containing [runtime/requirements.txt](runtime/requirements.txt); Python 3.12 was used for local verification.
 
 ```sh
-python3.12 -m venv build/python
-build/python/bin/python -m pip install -r runtime/requirements.txt
+python3.12 -m venv resources/runtime/python
+resources/runtime/python/bin/python -m pip install -r runtime/requirements.txt
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON \
-  -DPython3_EXECUTABLE="$PWD/build/python/bin/python" \
-  -DCMAKE_INSTALL_PREFIX="$PWD/build/stage"
+  -DPython3_EXECUTABLE="$PWD/resources/runtime/python/bin/python" \
+  -DCMAKE_INSTALL_PREFIX="$HOME/.local/SDK/iiAudioGen"
 cmake --build build --config Release
 ctest --test-dir build -C Release --output-on-failure
 cmake --install build --config Release
@@ -77,13 +77,13 @@ iiFileProvider. Build and install the two SDK packages first, then configure the
 tool; it is no longer installed by the library's CMake project:
 
 ```sh
-cmake -S tools -B build/tools \
-  -DiiAudioGen_DIR="$PWD/build/stage/lib/cmake/iiAudioGen" \
+cmake -S tools -B tools/build \
+  -DiiAudioGen_DIR="$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen" \
   -DiiFileProviderNative_DIR="$HOME/.local/SDK/iiFileProvider/lib/cmake/iiFileProviderNative"
-cmake --build build/tools --config Release
-build/tools/iiaudio-generate \
+cmake --build tools/build --config Release
+tools/build/iiaudio-generate \
   --model "$PWD/resources/models/audioldm2" \
-  --python "$PWD/build/python/bin/python" \
+  --python "$PWD/resources/runtime/python/bin/python" \
   --prompt "Gentle rain falling on leaves in a quiet forest." \
   --output "$PWD/resources/rain.wav" \
   --device cpu --steps 50 --duration 5 --rate 44100 --channels 1 --seed 42
@@ -104,7 +104,7 @@ target_link_libraries(my_app PRIVATE iiAudioGen::iiAudioGen)
 
 ```sh
 cmake -S tests/consumer -B build/consumer/build -DCMAKE_BUILD_TYPE=Release \
-  -DiiAudioGen_DIR="$PWD/build/stage/lib/cmake/iiAudioGen"
+  -DiiAudioGen_DIR="$HOME/.local/SDK/iiAudioGen/lib/cmake/iiAudioGen"
 cmake --build build/consumer/build --config Release
 ctest --test-dir build/consumer/build -C Release --output-on-failure
 ```
@@ -118,14 +118,14 @@ Normal CTest covers request/model contracts, local-only safe loading, failed mod
 For an explicit real-model acceptance test, configure:
 
 ```sh
-cmake -S . -B build \
-  -DIIAUDIOGEN_TEST_MODEL="$PWD/build/models/audioldm2" \
-  -DIIAUDIOGEN_TEST_PYTHON="$PWD/build/python/bin/python"
-cmake --build build --config Release
-ctest --test-dir build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure
+cmake -S tools -B tools/build \
+  -DIIAUDIOGEN_TEST_MODEL="$PWD/resources/models/audioldm2" \
+  -DIIAUDIOGEN_TEST_PYTHON="$PWD/resources/runtime/python/bin/python"
+cmake --build tools/build --config Release
+ctest --test-dir tools/build -C Release -R '^iiAudioGen.real_inference$' --output-on-failure
 ```
 
-That test loads real weights, generates three clips in one retained runtime, checks seed repeatability and prompt-dependent output, and writes `build/real-inference/rain.wav` and `bells.wav`. It does not grade perceptual audio quality. See [docs/Architecture.md](docs/Architecture.md) and [docs/Verification.md](docs/Verification.md) for implementation boundaries and recorded results.
+That test loads real weights, generates three clips in one retained runtime, checks seed repeatability and prompt-dependent output, and writes `resources/rain.wav` and `resources/bells.wav`. It does not grade perceptual audio quality. See [docs/Architecture.md](docs/Architecture.md) and [docs/Verification.md](docs/Verification.md) for implementation boundaries and recorded results.
 
 ## License
 
