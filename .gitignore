@@ -9,3 +9,4 @@ __pycache__/
 .iisacc-temporary.lock
 
 .*.iisacc-preview
+resources/
