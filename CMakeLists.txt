@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 project(iiAudioGen VERSION 0.3.1 LANGUAGES CXX)
+set(iiAudioGen_SPDX_LICENSE "Apache-2.0")
 
 
 
@@ -71,12 +72,17 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/iiAudioGenConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/iiAudioGenConfigVersion.cmake"
     DESTINATION "${_package_dir}")
 install(FILES README.md DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen)
+install(FILES LICENSE NOTICE DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen)
 install(DIRECTORY docs/ DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen/docs)
 install(FILES runtime/requirements.txt DESTINATION ${CMAKE_INSTALL_DATADIR}/iiAudioGen/runtime)
 
 if(BUILD_TESTING)
     add_test(NAME iiAudioGen.source_layout COMMAND ${CMAKE_COMMAND}
         "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/source_layout.cmake")
+    add_test(NAME iiAudioGen.license COMMAND ${CMAKE_COMMAND}
+        "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}"
+        "-DBINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/license.cmake")
     add_test(NAME iiAudioGen.sdk_boundary COMMAND ${CMAKE_COMMAND}
         "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/sdk_boundary.cmake")
     find_package(Python3 3.10 COMPONENTS Interpreter REQUIRED)
