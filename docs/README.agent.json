@@ -10,9 +10,9 @@
   },
   "source": {
     "path": "docs/README.md",
-    "sha256": "1d0dd8b8b7237f87ddb9bf14bd4b48d22bebe8321f00551060259e9a1b486cc7",
-    "bytes": 879,
-    "line_count": 17,
+    "sha256": "4f4a84ee8dd9eb7b0055975699f25eec6263bf6853e6f529b36fb79245cfa45d",
+    "bytes": 944,
+    "line_count": 18,
     "encoding": "utf-8",
     "language": "en"
   },
@@ -79,8 +79,8 @@
       "id": "b000008",
       "kind": "table",
       "start_line": 8,
-      "end_line": 16,
-      "raw": "| Document | Agent JSON |\n| --- | --- |\n| [`AGENT.md`](../AGENT.md) | [JSON](entrypoints/AGENT.agent.json) |\n| [`README.md`](../README.md) | [JSON](entrypoints/README.agent.json) |\n| [`docs/Architecture.md`](Architecture.md) | [JSON](Architecture.agent.json) |\n| [`docs/FILE_PROVIDER.md`](FILE_PROVIDER.md) | [JSON](FILE_PROVIDER.agent.json) |\n| [`docs/Verification.md`](Verification.md) | [JSON](Verification.agent.json) |\n| [`docs/WindowsBuildAndRun.md`](WindowsBuildAndRun.md) | [JSON](WindowsBuildAndRun.agent.json) |\n| [`docs/documentation-structure.md`](documentation-structure.md) | [JSON](documentation-structure.agent.json) |\n",
+      "end_line": 17,
+      "raw": "| Document | Agent JSON |\n| --- | --- |\n| [`AGENT.md`](../AGENT.md) | [JSON](entrypoints/AGENT.agent.json) |\n| [`README.md`](../README.md) | [JSON](entrypoints/README.agent.json) |\n| [`docs/Architecture.md`](Architecture.md) | [JSON](Architecture.agent.json) |\n| [`docs/FILE_PROVIDER.md`](FILE_PROVIDER.md) | [JSON](FILE_PROVIDER.agent.json) |\n| [`docs/License.md`](License.md) | [JSON](License.agent.json) |\n| [`docs/Verification.md`](Verification.md) | [JSON](Verification.agent.json) |\n| [`docs/WindowsBuildAndRun.md`](WindowsBuildAndRun.md) | [JSON](WindowsBuildAndRun.agent.json) |\n| [`docs/documentation-structure.md`](documentation-structure.md) | [JSON](documentation-structure.agent.json) |\n",
       "columns": [
         "Document",
         "Agent JSON"
@@ -103,6 +103,10 @@
           "[JSON](FILE_PROVIDER.agent.json)"
         ],
         [
+          "[`docs/License.md`](License.md)",
+          "[JSON](License.agent.json)"
+        ],
+        [
           "[`docs/Verification.md`](Verification.md)",
           "[JSON](Verification.agent.json)"
         ],
@@ -119,8 +123,8 @@
     {
       "id": "b000009",
       "kind": "html",
-      "start_line": 17,
-      "end_line": 17,
+      "start_line": 18,
+      "end_line": 18,
       "raw": "<!-- workspace-docs:document-map:end -->\n"
     }
   ],
@@ -204,45 +208,59 @@
       },
       {
         "block_id": "b000008",
+        "label": "`docs/License.md`",
+        "target": "License.md",
+        "kind": "relative",
+        "line": 14
+      },
+      {
+        "block_id": "b000008",
+        "label": "JSON",
+        "target": "License.agent.json",
+        "kind": "relative",
+        "line": 14
+      },
+      {
+        "block_id": "b000008",
         "label": "`docs/Verification.md`",
         "target": "Verification.md",
         "kind": "relative",
-        "line": 14
+        "line": 15
       },
       {
         "block_id": "b000008",
         "label": "JSON",
         "target": "Verification.agent.json",
         "kind": "relative",
-        "line": 14
+        "line": 15
       },
       {
         "block_id": "b000008",
         "label": "`docs/WindowsBuildAndRun.md`",
         "target": "WindowsBuildAndRun.md",
         "kind": "relative",
-        "line": 15
+        "line": 16
       },
       {
         "block_id": "b000008",
         "label": "JSON",
         "target": "WindowsBuildAndRun.agent.json",
         "kind": "relative",
-        "line": 15
+        "line": 16
       },
       {
         "block_id": "b000008",
         "label": "`docs/documentation-structure.md`",
         "target": "documentation-structure.md",
         "kind": "relative",
-        "line": 16
+        "line": 17
       },
       {
         "block_id": "b000008",
         "label": "JSON",
         "target": "documentation-structure.agent.json",
         "kind": "relative",
-        "line": 16
+        "line": 17
       }
     ],
     "tables": [
@@ -268,6 +286,10 @@
           [
             "[`docs/FILE_PROVIDER.md`](FILE_PROVIDER.md)",
             "[JSON](FILE_PROVIDER.agent.json)"
+          ],
+          [
+            "[`docs/License.md`](License.md)",
+            "[JSON](License.agent.json)"
           ],
           [
             "[`docs/Verification.md`](Verification.md)",
