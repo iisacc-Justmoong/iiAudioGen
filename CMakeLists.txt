@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 project(iiAudioGen VERSION 0.3.1 LANGUAGES CXX)
+include(./cmake/ModuleImports.cmake)
 
 
 

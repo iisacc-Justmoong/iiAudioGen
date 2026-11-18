@@ -1,0 +1,6 @@
+#pragma once
+
+// C++ public entry for iiAudioGen; the linked components select the API.
+#include <iiAudioGen/iiAudioGen.h>
+#include <iiAudioGen/Diffusers.h>
+#include <iiAudioGen/Export.h>
